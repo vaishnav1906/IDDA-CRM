@@ -136,16 +136,16 @@ export const SignInUp = () => {
     }
 
     if (isGlobalScope) {
-      return t`Welcome to Twenty`;
+      return t`Welcome to IDDA CRM`;
     }
 
     const workspaceName = workspacePublicData?.displayName;
 
     if (!workspaceName) {
-      return t`Welcome to your workspace`;
+      return t`Welcome to IDDA CRM`;
     }
 
-    return t`Welcome, ${workspaceName}.`;
+    return t`Welcome to ${workspaceName}`;
   }, [
     workspaceInviteHash,
     signInUpStep,
@@ -154,8 +154,7 @@ export const SignInUp = () => {
     t,
     workspaceFromInviteHash?.displayName,
   ]);
-
-  const signInUpForm = useMemo(() => {
+    const signInUpForm = useMemo(() => {
     if (getPublicWorkspaceDataLoading || !clientConfigApiStatus.isLoadedOnce) {
       return (
         <StyledLoaderContainer>

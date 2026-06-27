@@ -104,13 +104,13 @@ export const SignInUpV2 = () => {
     }
 
     if (isGlobalScope) {
-      return t`Welcome to Twenty`;
+      return t`Welcome to IDDA CRM`;
     }
 
     const workspaceName = workspacePublicData?.displayName;
 
     if (!workspaceName) {
-      return t`Welcome to your workspace`;
+      return t`Welcome to IDDA CRM`;
     }
 
     return t`Welcome, ${workspaceName}.`;
