@@ -678,4 +678,52 @@ export const buildWorkspaceMemberStandardFlatFieldMetadatas = ({
     twentyStandardApplicationId,
     now,
   }),
+  // IDDA: inverse side of Subscription.assignedEmployee
+  managedSubscriptions: createStandardRelationFieldFlatMetadata({
+    objectName,
+    workspaceId,
+    context: {
+      type: FieldMetadataType.RELATION,
+      morphId: null,
+      fieldName: 'managedSubscriptions',
+      label: i18nLabel(msg`Managed Subscriptions`),
+      description: i18nLabel(msg`Subscriptions managed by this workspace member`),
+      icon: 'IconReceipt',
+      isNullable: true,
+      isUIEditable: false,
+      targetObjectName: 'subscription',
+      targetFieldName: 'assignedEmployee',
+      settings: {
+        relationType: RelationType.ONE_TO_MANY,
+      },
+    },
+    standardObjectMetadataRelatedEntityIds,
+    dependencyFlatEntityMaps,
+    twentyStandardApplicationId,
+    now,
+  }),
+  // IDDA: inverse side of Lead.assignedTo
+  assignedLeads: createStandardRelationFieldFlatMetadata({
+    objectName,
+    workspaceId,
+    context: {
+      type: FieldMetadataType.RELATION,
+      morphId: null,
+      fieldName: 'assignedLeads',
+      label: i18nLabel(msg`Assigned Leads`),
+      description: i18nLabel(msg`Leads assigned to this workspace member`),
+      icon: 'IconTargetArrow',
+      isNullable: true,
+      isUIEditable: false,
+      targetObjectName: 'lead',
+      targetFieldName: 'assignedTo',
+      settings: {
+        relationType: RelationType.ONE_TO_MANY,
+      },
+    },
+    standardObjectMetadataRelatedEntityIds,
+    dependencyFlatEntityMaps,
+    twentyStandardApplicationId,
+    now,
+  }),
 });

@@ -64,4 +64,16 @@ export const buildTaskTargetStandardFlatIndexMetadatas = ({
     twentyStandardApplicationId,
     now,
   }),
+  leadIdIndex: createStandardIndexFlatMetadata({
+    objectName,
+    workspaceId,
+    context: {
+      indexName: 'leadIdIndex',
+      relatedFieldNames: ['targetLead'],
+    },
+    standardObjectMetadataRelatedEntityIds,
+    dependencyFlatEntityMaps,
+    twentyStandardApplicationId,
+    now,
+  }),
 });

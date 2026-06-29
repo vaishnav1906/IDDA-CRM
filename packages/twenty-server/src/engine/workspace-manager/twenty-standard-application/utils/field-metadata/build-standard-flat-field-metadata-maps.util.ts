@@ -33,6 +33,8 @@ import { buildWorkflowRunStandardFlatFieldMetadatas } from 'src/engine/workspace
 import { buildWorkflowStandardFlatFieldMetadatas } from 'src/engine/workspace-manager/twenty-standard-application/utils/field-metadata/compute-workflow-standard-flat-field-metadata.util';
 import { buildWorkflowVersionStandardFlatFieldMetadatas } from 'src/engine/workspace-manager/twenty-standard-application/utils/field-metadata/compute-workflow-version-standard-flat-field-metadata.util';
 import { buildWorkspaceMemberStandardFlatFieldMetadatas } from 'src/engine/workspace-manager/twenty-standard-application/utils/field-metadata/compute-workspace-member-standard-flat-field-metadata.util';
+import { buildLeadStandardFlatFieldMetadatas } from 'src/engine/workspace-manager/twenty-standard-application/utils/field-metadata/compute-lead-standard-flat-field-metadata.util';
+import { buildSubscriptionStandardFlatFieldMetadatas } from 'src/engine/workspace-manager/twenty-standard-application/utils/field-metadata/compute-subscription-standard-flat-field-metadata.util';
 import { type CreateStandardFieldArgs } from 'src/engine/workspace-manager/twenty-standard-application/utils/field-metadata/create-standard-field-flat-metadata.util';
 
 type StandardFieldBuilder<P extends AllStandardObjectName> = (
@@ -73,6 +75,8 @@ const STANDARD_FLAT_FIELD_METADATA_BUILDERS_BY_OBJECT_NAME = {
   workflowRun: buildWorkflowRunStandardFlatFieldMetadatas,
   workflowVersion: buildWorkflowVersionStandardFlatFieldMetadatas,
   workspaceMember: buildWorkspaceMemberStandardFlatFieldMetadatas,
+  lead: buildLeadStandardFlatFieldMetadatas,
+  subscription: buildSubscriptionStandardFlatFieldMetadatas,
 } satisfies {
   [P in AllStandardObjectName]: StandardFieldBuilder<P>;
 };

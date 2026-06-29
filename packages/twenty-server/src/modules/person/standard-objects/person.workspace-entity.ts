@@ -16,6 +16,8 @@ import { type MessageListMemberWorkspaceEntity } from 'src/modules/emailing/stan
 import { type MessageParticipantWorkspaceEntity } from 'src/modules/messaging/common/standard-objects/message-participant.workspace-entity';
 import { type NoteTargetWorkspaceEntity } from 'src/modules/note/standard-objects/note-target.workspace-entity';
 import { type OpportunityWorkspaceEntity } from 'src/modules/opportunity/standard-objects/opportunity.workspace-entity';
+import { type LeadWorkspaceEntity } from 'src/modules/lead/standard-objects/lead.workspace-entity';
+import { type SubscriptionWorkspaceEntity } from 'src/modules/subscription/standard-objects/subscription.workspace-entity';
 import { type TaskTargetWorkspaceEntity } from 'src/modules/task/standard-objects/task-target.workspace-entity';
 import { type TimelineActivityWorkspaceEntity } from 'src/modules/timeline/standard-objects/timeline-activity.workspace-entity';
 
@@ -36,6 +38,8 @@ export class PersonWorkspaceEntity extends BaseWorkspaceEntity {
   company: EntityRelation<CompanyWorkspaceEntity> | null;
   companyId: string | null;
   pointOfContactForOpportunities: EntityRelation<OpportunityWorkspaceEntity[]>;
+  leads: EntityRelation<LeadWorkspaceEntity[]>;
+  subscriptions: EntityRelation<SubscriptionWorkspaceEntity[]>;
   taskTargets: EntityRelation<TaskTargetWorkspaceEntity[]>;
   noteTargets: EntityRelation<NoteTargetWorkspaceEntity[]>;
   attachments: EntityRelation<AttachmentWorkspaceEntity[]>;

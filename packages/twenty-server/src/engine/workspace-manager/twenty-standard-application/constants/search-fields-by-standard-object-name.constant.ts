@@ -53,6 +53,15 @@ export const SEARCH_FIELDS_BY_STANDARD_OBJECT_NAME = {
     { name: 'name', type: FieldMetadataType.FULL_NAME },
     { name: 'userEmail', type: FieldMetadataType.TEXT },
   ],
+  subscription: [
+    { name: 'name', type: FieldMetadataType.TEXT },
+  ],
+  lead: [
+    { name: 'clinicName', type: FieldMetadataType.TEXT },
+    { name: 'doctorName', type: FieldMetadataType.TEXT },
+    { name: 'phone', type: FieldMetadataType.TEXT },
+    { name: 'city', type: FieldMetadataType.TEXT },
+  ],
 } satisfies {
   [ObjectName in AllStandardObjectName]: {
     name: AllStandardObjectFieldName<ObjectName>;

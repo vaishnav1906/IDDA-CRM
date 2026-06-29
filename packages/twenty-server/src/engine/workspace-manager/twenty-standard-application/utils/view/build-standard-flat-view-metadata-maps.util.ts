@@ -11,6 +11,8 @@ import { computeStandardCalendarEventViews } from 'src/engine/workspace-manager/
 import { computeStandardCallRecordingViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-call-recording-views.util';
 import { computeStandardCompanyViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-company-views.util';
 import { computeStandardDashboardViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-dashboard-views.util';
+import { computeStandardLeadViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-lead-views.util';
+import { computeStandardSubscriptionViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-subscription-views.util';
 import { computeStandardMessageChannelMessageAssociationMessageFolderViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-message-channel-message-association-message-folder-views.util';
 import { computeStandardMessageChannelMessageAssociationViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-message-channel-message-association-views.util';
 import { computeStandardMessageParticipantViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-message-participant-views.util';
@@ -44,6 +46,7 @@ const STANDARD_FLAT_VIEW_METADATA_BUILDERS_BY_OBJECT_NAME = {
   callRecording: computeStandardCallRecordingViews,
   company: computeStandardCompanyViews,
   dashboard: computeStandardDashboardViews,
+  lead: computeStandardLeadViews,
   message: computeStandardMessageViews,
   messageChannelMessageAssociation:
     computeStandardMessageChannelMessageAssociationViews,
@@ -63,6 +66,7 @@ const STANDARD_FLAT_VIEW_METADATA_BUILDERS_BY_OBJECT_NAME = {
   workflowRun: computeStandardWorkflowRunViews,
   workflowVersion: computeStandardWorkflowVersionViews,
   workspaceMember: computeStandardWorkspaceMemberViews,
+  subscription: computeStandardSubscriptionViews,
 } as const satisfies {
   [P in AllStandardObjectName]?: StandardViewBuilder<P>;
 };
