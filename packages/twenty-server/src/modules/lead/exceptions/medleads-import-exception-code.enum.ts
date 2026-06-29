@@ -1,0 +1,6 @@
+export enum MedleadsImportExceptionCode {
+  INVALID_FILE = 'INVALID_FILE',
+  EMPTY_FILE = 'EMPTY_FILE',
+  PARSE_ERROR = 'PARSE_ERROR',
+  IMPORT_FAILED = 'IMPORT_FAILED',
+}
