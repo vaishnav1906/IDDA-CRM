@@ -16,4 +16,6 @@ export enum FileFolder {
   EmailAttachment = 'email-attachment',
   AppTarball = 'app-tarball',
   GeneratedSdkClient = 'generated-sdk-client',
+  VisitSelfie = 'visit-selfie',
+  ClinicPhoto = 'clinic-photo',
 }

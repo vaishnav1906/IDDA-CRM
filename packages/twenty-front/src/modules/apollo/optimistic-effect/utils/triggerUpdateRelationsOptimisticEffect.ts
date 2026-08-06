@@ -21,7 +21,6 @@ import { type ApolloCache } from '@apollo/client';
 import { isArray } from '@sniptt/guards';
 import {
   computeMorphRelationGqlFieldName,
-  CustomError,
   isDefined,
 } from 'twenty-shared/utils';
 import { isDeeplyEqual } from '~/utils/isDeeplyEqual';
@@ -135,10 +134,10 @@ const triggerUpdateRelationOptimisticEffect = ({
       objectMetadataItems,
     });
   if (!targetFieldMetadataFullObject) {
-    throw new CustomError(
-      'Target field metadata full object not found',
-      'TARGET_FIELD_METADATA_FULL_OBJECT_NOT_FOUND',
-    );
+    // MORPH_RELATION deduplication keeps only one back-reference field per
+    // morphId group; targets for other source objects are filtered out.
+    // Skip optimistic update — the server response will refresh the cache.
+    return;
   }
 
   const fullTargetObjectMetadataItem = objectMetadataItems.find(
@@ -291,10 +290,7 @@ const triggerUpdateMorphRelationOptimisticEffect = ({
         objectMetadataItems,
       });
     if (!targetFieldMetadataFullObject) {
-      throw new CustomError(
-        'Target field metadata full object not found',
-        'TARGET_FIELD_METADATA_FULL_OBJECT_NOT_FOUND',
-      );
+      return;
     }
 
     const fieldDoesNotExist =

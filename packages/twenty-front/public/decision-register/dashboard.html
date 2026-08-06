@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Dashboard — Decision Register</title>
+  <style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}}</style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">tailwind.config={theme:{extend:{"colors":{"on-tertiary-fixed-variant":"#7d2d00","tertiary-fixed":"#ffdbcd","tertiary-container":"#bc4800","on-secondary":"#ffffff","background":"#faf8ff","on-background":"#131b2e","on-primary-container":"#eeefff","error":"#ba1a1a","on-primary":"#ffffff","primary":"#004ac6","outline-variant":"#c3c6d7","on-secondary-container":"#54647a","on-error-container":"#93000a","error-container":"#ffdad6","on-error":"#ffffff","surface":"#faf8ff","surface-variant":"#dae2fd","on-surface":"#131b2e","on-surface-variant":"#434655","surface-container-highest":"#dae2fd","surface-container-lowest":"#ffffff","secondary-fixed":"#d3e4fe","outline":"#737686","surface-container-low":"#f2f3ff","secondary-container":"#d0e1fb","tertiary":"#943700","surface-container-high":"#e2e7ff","primary-container":"#2563eb","surface-container":"#eaedff"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"lg":"24px","md":"16px","gutter":"20px","margin-desktop":"32px","2xl":"48px","sm":"8px","xs":"4px","xl":"32px","margin-mobile":"16px","base":"4px"}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+    .material-symbols-outlined.fill { font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24; }
+    .metric-icon { font-variation-settings: 'FILL' 1,'wght' 300,'GRAD' 0,'opsz' 48; font-size: 2.5rem; }
+    tr.decision-row:hover { background-color: #eaedff; }
+  </style>
+</head>
+<body class="bg-background text-sm text-on-background">
+
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+  <div class="h-16 flex items-center px-6 gap-2 border-b border-outline-variant">
+    <span class="material-symbols-outlined text-primary">fact_check</span>
+    <span class="font-semibold text-lg text-on-surface">Decision Register</span>
+  </div>
+
+  <nav class="flex-1 px-4 mt-6 space-y-1">
+    <!-- Dashboard (active) -->
+    <a href="dashboard.html" class="flex items-center px-4 py-2.5 rounded-lg transition-colors gap-3 bg-primary-container text-on-primary-container font-medium">
+      <span class="material-symbols-outlined text-[20px]">dashboard</span>
+      <span>Dashboard</span>
+    </a>
+    <!-- Decisions -->
+    <a href="list.html" class="flex items-center px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors gap-3">
+      <span class="material-symbols-outlined text-[20px]">list_alt</span>
+      <span>Decisions</span>
+    </a>
+    <div class="pt-4 mt-4 border-t border-outline-variant">
+      <a href="http://localhost:3001" class="flex items-center px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors gap-3">
+        <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+        <span>Back to CRM</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- User profile -->
+  <div id="userProfile" class="px-4 py-4 border-t border-outline-variant hidden">
+    <div class="flex items-center gap-3">
+      <div id="userAvatar" class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-on-primary font-semibold text-sm flex-shrink-0"></div>
+      <div class="min-w-0">
+        <div id="userName" class="text-sm font-medium text-on-surface truncate"></div>
+        <div id="userRole" class="text-xs text-on-surface-variant truncate"></div>
+      </div>
+      <div id="approverBadge" class="hidden ml-auto">
+        <span class="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium">Approver</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main area -->
+<div class="pl-72">
+  <!-- Top header -->
+  <header class="fixed top-0 left-72 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-8">
+    <div class="flex items-center bg-surface-container rounded-full px-4 py-1.5 w-96 gap-2">
+      <span class="material-symbols-outlined text-on-surface-variant text-[18px]">search</span>
+      <input
+        id="searchInput"
+        class="bg-transparent border-none focus:ring-0 text-sm text-on-surface w-full outline-none placeholder:text-on-surface-variant"
+        placeholder="Search decisions…"
+        type="text"
+        oninput="handleSearch(this.value)"
+      />
+    </div>
+    <div class="flex items-center gap-3">
+      <div id="headerAvatar" class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-on-primary font-semibold text-sm flex-shrink-0 cursor-default select-none hidden"></div>
+      <span id="headerName" class="text-sm font-medium text-on-surface hidden"></span>
+    </div>
+  </header>
+
+  <!-- Page content -->
+  <main class="pt-16 min-h-screen bg-background px-8 py-8">
+
+    <!-- Page heading -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-on-background tracking-tight">Dashboard</h1>
+      <p class="text-on-surface-variant text-sm mt-1">Overview of all decisions and activity in the register.</p>
+    </div>
+
+    <!-- Error banner -->
+    <div id="errorBanner" class="hidden mb-6 flex items-center gap-3 bg-error-container text-on-error-container px-5 py-3 rounded-xl text-sm">
+      <span class="material-symbols-outlined text-[18px]">error</span>
+      <span id="errorMsg"></span>
+    </div>
+
+    <!-- Metric cards -->
+    <div class="grid grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+      <!-- Total -->
+      <div class="bg-white border border-outline-variant rounded-2xl shadow-sm p-6 flex items-center justify-between gap-4">
+        <div>
+          <p class="text-xs font-medium uppercase tracking-widest text-on-surface-variant mb-2">Total Decisions</p>
+          <p id="metricTotal" class="text-4xl font-bold text-on-background">—</p>
+        </div>
+        <span class="material-symbols-outlined metric-icon text-primary/20">inventory_2</span>
+      </div>
+      <!-- This month -->
+      <div class="bg-white border border-outline-variant rounded-2xl shadow-sm p-6 flex items-center justify-between gap-4">
+        <div>
+          <p class="text-xs font-medium uppercase tracking-widest text-on-surface-variant mb-2">This Month</p>
+          <p id="metricMonth" class="text-4xl font-bold text-on-background">—</p>
+        </div>
+        <span class="material-symbols-outlined metric-icon text-secondary-container" style="color:#d0e1fb">calendar_month</span>
+      </div>
+      <!-- Pending -->
+      <div class="bg-white border border-outline-variant rounded-2xl shadow-sm p-6 flex items-center justify-between gap-4">
+        <div>
+          <p class="text-xs font-medium uppercase tracking-widest text-on-surface-variant mb-2">Pending Approval</p>
+          <p id="metricPending" class="text-4xl font-bold text-amber-600">—</p>
+        </div>
+        <span class="material-symbols-outlined metric-icon" style="color:#fde68a">pending_actions</span>
+      </div>
+      <!-- Approved -->
+      <div class="bg-white border border-outline-variant rounded-2xl shadow-sm p-6 flex items-center justify-between gap-4">
+        <div>
+          <p class="text-xs font-medium uppercase tracking-widest text-on-surface-variant mb-2">Approved</p>
+          <p id="metricApproved" class="text-4xl font-bold text-green-600">—</p>
+        </div>
+        <span class="material-symbols-outlined metric-icon" style="color:#bbf7d0">check_circle</span>
+      </div>
+    </div>
+
+    <!-- Two-column lower section -->
+    <div class="flex gap-6 items-start">
+
+      <!-- Recent decisions table (65%) -->
+      <div class="flex-[65] bg-white border border-outline-variant rounded-2xl shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-outline-variant">
+          <h2 class="font-semibold text-base text-on-surface">Recent Decisions</h2>
+          <a href="list.html" class="text-primary text-sm font-medium hover:underline flex items-center gap-1">
+            View All <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+          </a>
+        </div>
+        <div id="loadingDecisions" class="py-12 flex items-center justify-center gap-2 text-on-surface-variant text-sm">
+          <span class="material-symbols-outlined animate-spin text-primary text-[20px]">progress_activity</span>
+          Loading…
+        </div>
+        <table id="decisionsTable" class="hidden w-full text-sm">
+          <thead>
+            <tr class="border-b border-outline-variant">
+              <th class="text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider text-on-surface-variant w-[40%]">Decision</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Category</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Owner</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Status</th>
+            </tr>
+          </thead>
+          <tbody id="decisionsBody"></tbody>
+        </table>
+        <div id="noDecisions" class="hidden py-12 flex flex-col items-center gap-3 text-on-surface-variant">
+          <span class="material-symbols-outlined text-[40px]">inbox</span>
+          <p class="text-sm">No decisions found.</p>
+        </div>
+      </div>
+
+      <!-- Activity Feed (35%) -->
+      <div class="flex-[35] bg-white border border-outline-variant rounded-2xl shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-outline-variant">
+          <h2 class="font-semibold text-base text-on-surface">Activity Feed</h2>
+        </div>
+        <div id="loadingFeed" class="py-12 flex items-center justify-center gap-2 text-on-surface-variant text-sm">
+          <span class="material-symbols-outlined animate-spin text-primary text-[20px]">progress_activity</span>
+          Loading…
+        </div>
+        <ul id="activityFeed" class="hidden divide-y divide-outline-variant/50"></ul>
+        <div id="noActivity" class="hidden py-12 flex flex-col items-center gap-3 text-on-surface-variant">
+          <span class="material-symbols-outlined text-[40px]">history</span>
+          <p class="text-sm">No recent activity.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  const SERVER = 'http://localhost:3000';
+  let allDecisions = [];
+
+  /* ── helpers ─────────────────────────────────────────────── */
+  function escHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  let _token = null;
+function getToken() { return _token; }
+
+function _getRawPair() {
+  try {
+    const raw = localStorage.getItem('tokenPairState') || sessionStorage.getItem('tokenPairState');
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+function _jwtExpired(token) {
+  try {
+    const p = JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
+    return p.exp * 1000 < Date.now() + 60000;
+  } catch { return false; }
+}
+async function _renewPair(rt) {
+  const res = await fetch(`${SERVER}/graphql`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: `mutation { renewToken(appToken: "${rt}") { tokens { accessToken { token expiresAt } refreshToken { token expiresAt } } } }` }),
+  });
+  const json = await res.json();
+  return json?.data?.renewToken?.tokens ?? null;
+}
+function _savePair(tokens) {
+  try {
+    const key = 'tokenPairState';
+    const src = localStorage.getItem(key) ? localStorage : sessionStorage;
+    const existing = JSON.parse(src.getItem(key) || '{}');
+    src.setItem(key, JSON.stringify({ ...existing, accessOrWorkspaceAgnosticToken: tokens.accessToken, refreshToken: tokens.refreshToken }));
+  } catch {}
+}
+async function initToken() {
+  const pair = _getRawPair();
+  if (!pair?.accessOrWorkspaceAgnosticToken?.token) { window.location.href = '/welcome'; return; }
+  if (_jwtExpired(pair.accessOrWorkspaceAgnosticToken.token)) {
+    const rt = pair.refreshToken?.token;
+    if (!rt) { window.location.href = '/welcome'; return; }
+    try {
+      const tokens = await _renewPair(rt);
+      if (!tokens) throw new Error();
+      _savePair(tokens);
+      _token = tokens.accessToken.token;
+    } catch { window.location.href = '/welcome'; }
+  } else {
+    _token = pair.accessOrWorkspaceAgnosticToken.token;
+  }
+}
+
+  function statusBadge(status) {
+    const map = {
+      DRAFT:            { cls: 'bg-gray-100 text-gray-700',   label: 'Draft' },
+      PENDING_APPROVAL: { cls: 'bg-amber-100 text-amber-700', label: 'Pending' },
+      APPROVED:         { cls: 'bg-green-100 text-green-700', label: 'Approved' },
+      REJECTED:         { cls: 'bg-red-100 text-red-700',     label: 'Rejected' },
+    };
+    const s = map[status] || { cls: 'bg-gray-100 text-gray-600', label: escHtml(status) };
+    return `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${s.cls}">${s.label}</span>`;
+  }
+
+  function activityDotClass(status) {
+    if (status === 'APPROVED')         return 'bg-green-500';
+    if (status === 'PENDING_APPROVAL') return 'bg-amber-500';
+    if (status === 'REJECTED')         return 'bg-red-500';
+    return 'bg-blue-500';
+  }
+
+  function activityVerb(status) {
+    if (status === 'APPROVED')         return 'Approved';
+    if (status === 'PENDING_APPROVAL') return 'Submitted for Approval';
+    if (status === 'REJECTED')         return 'Rejected';
+    return 'Created';
+  }
+
+  function formatDate(iso) {
+    if (!iso) return '';
+    try {
+      return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(iso));
+    } catch { return iso; }
+  }
+
+  function showError(msg) {
+    document.getElementById('errorMsg').textContent = msg;
+    document.getElementById('errorBanner').classList.remove('hidden');
+  }
+
+  function initials(name) {
+    if (!name) return '?';
+    return name.trim().split(/\s+/).map(w => w[0]).join('').toUpperCase().slice(0, 2);
+  }
+
+  /* ── permissions / user profile ──────────────────────────── */
+  async function loadPermissions(token) {
+    try {
+      const res = await fetch(`${SERVER}/rest/decision-register/me/permissions`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+
+      const name = data?.name || data?.displayName || data?.email || '';
+      const role = data?.role || data?.workspaceMemberRole || '';
+      const isApprover = data?.canApprove || data?.permissions?.includes('APPROVE') || false;
+
+      if (name) {
+        const av = initials(name);
+        document.getElementById('userAvatar').textContent = av;
+        document.getElementById('userName').textContent = name;
+        document.getElementById('userRole').textContent = role;
+        document.getElementById('userProfile').classList.remove('hidden');
+
+        document.getElementById('headerAvatar').textContent = av;
+        document.getElementById('headerName').textContent = name;
+        document.getElementById('headerAvatar').classList.remove('hidden');
+        document.getElementById('headerName').classList.remove('hidden');
+
+        if (isApprover) {
+          document.getElementById('approverBadge').classList.remove('hidden');
+        }
+      }
+    } catch { /* non-fatal */ }
+  }
+
+  /* ── dashboard data ───────────────────────────────────────── */
+  async function loadDashboard(token) {
+    try {
+      const [recentRes, allRes] = await Promise.all([
+        fetch(`${SERVER}/rest/decision-register?pageSize=5`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${SERVER}/rest/decision-register?pageSize=1000`, { headers: { Authorization: `Bearer ${token}` } }),
+      ]);
+      if (!recentRes.ok) throw new Error(`Server returned ${recentRes.status}`);
+
+      const recentJson = await recentRes.json();
+      const allJson = allRes.ok ? await allRes.json() : recentJson;
+
+      const recent = Array.isArray(recentJson) ? recentJson : (recentJson.data ?? []);
+      const all    = Array.isArray(allJson)    ? allJson    : (allJson.data ?? recent);
+      allDecisions = recent;
+
+      renderMetrics(all, allRes.ok ? (allJson.total ?? all.length) : all.length);
+      renderTable(recent.slice(0, 5));
+      renderFeed(recent.slice(0, 5));
+    } catch (err) {
+      showError('Could not load decisions: ' + err.message);
+      renderTable([]);
+      renderFeed([]);
+    }
+  }
+
+  function renderMetrics(decisions, total) {
+    const now = new Date();
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+    const month    = decisions.filter(d => d.createdAt && new Date(d.createdAt) >= monthStart).length;
+    const pending  = decisions.filter(d => d.status === 'PENDING_APPROVAL').length;
+    const approved = decisions.filter(d => d.status === 'APPROVED').length;
+
+    document.getElementById('metricTotal').textContent    = total ?? decisions.length;
+    document.getElementById('metricMonth').textContent    = month;
+    document.getElementById('metricPending').textContent  = pending;
+    document.getElementById('metricApproved').textContent = approved;
+  }
+
+  function renderTable(decisions) {
+    document.getElementById('loadingDecisions').classList.add('hidden');
+
+    if (!decisions.length) {
+      document.getElementById('noDecisions').classList.remove('hidden');
+      return;
+    }
+
+    const tbody = document.getElementById('decisionsBody');
+    tbody.innerHTML = decisions.map(d => {
+      const title       = escHtml(d.title || d.name || '(Untitled)');
+      const category    = escHtml(d.category || '—');
+      const owner       = escHtml(d.createdByName || d.owner || d.createdBy?.name || '—');
+      const updatedAt   = formatDate(d.updatedAt || d.createdAt);
+      const status      = d.status || 'DRAFT';
+      const detailHref  = `detail.html?id=${encodeURIComponent(d.id || '')}`;
+
+      return `
+        <tr class="decision-row border-b border-outline-variant/60 cursor-pointer transition-colors" onclick="location.href='${detailHref}'">
+          <td class="px-6 py-4">
+            <p class="font-medium text-on-surface line-clamp-1">${title}</p>
+            <p class="text-xs text-on-surface-variant mt-0.5">${updatedAt}</p>
+          </td>
+          <td class="px-6 py-4 text-on-surface-variant">${category}</td>
+          <td class="px-6 py-4 text-on-surface-variant">${owner}</td>
+          <td class="px-6 py-4">${statusBadge(status)}</td>
+        </tr>`;
+    }).join('');
+
+    document.getElementById('decisionsTable').classList.remove('hidden');
+  }
+
+  function renderFeed(decisions) {
+    document.getElementById('loadingFeed').classList.add('hidden');
+
+    if (!decisions.length) {
+      document.getElementById('noActivity').classList.remove('hidden');
+      return;
+    }
+
+    const ul = document.getElementById('activityFeed');
+    ul.innerHTML = decisions.map((d, i) => {
+      const title  = escHtml(d.title || d.name || '(Untitled)');
+      const status = d.status || 'DRAFT';
+      const verb   = activityVerb(status);
+      const dot    = activityDotClass(status);
+      const date   = formatDate(d.updatedAt || d.createdAt);
+      const who    = escHtml(d.createdByName || d.createdBy?.name || '');
+
+      return `
+        <li class="flex gap-4 px-5 py-4 items-start">
+          <!-- timeline -->
+          <div class="flex flex-col items-center pt-1 flex-shrink-0">
+            <span class="w-2.5 h-2.5 rounded-full ${dot} flex-shrink-0"></span>
+            ${i < decisions.length - 1 ? '<span class="w-px flex-1 mt-1 bg-outline-variant min-h-[24px]"></span>' : ''}
+          </div>
+          <div class="min-w-0">
+            <p class="font-medium text-on-surface text-sm leading-snug">${verb}: <span class="font-normal">${title}</span></p>
+            <p class="text-xs text-on-surface-variant mt-0.5">${date}${who ? ' · ' + who : ''}</p>
+          </div>
+        </li>`;
+    }).join('');
+
+    ul.classList.remove('hidden');
+  }
+
+  /* ── search (client-side filter on loaded data) ─────────── */
+  function handleSearch(q) {
+    q = q.trim().toLowerCase();
+    const filtered = q
+      ? allDecisions.filter(d =>
+          (d.title || '').toLowerCase().includes(q) ||
+          (d.category || '').toLowerCase().includes(q) ||
+          (d.createdByName || '').toLowerCase().includes(q)
+        )
+      : allDecisions;
+    renderTable(filtered.slice(0, 5));
+  }
+
+  /* ── bootstrap ───────────────────────────────────────────── */
+  (async function init() {
+    await initToken();
+    const token = getToken();
+    await Promise.all([
+      loadPermissions(token),
+      loadDashboard(token),
+    ]);
+  })();
+</script>
+</body>
+</html>

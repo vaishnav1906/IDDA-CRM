@@ -26,6 +26,7 @@ import {
   AI_SDK_OPENAI_COMPATIBLE,
   AI_SDK_XAI,
 } from 'src/engine/metadata-modules/ai/ai-models/constants/ai-sdk-package.const';
+import { deduplicateMistralToolCallIdsMiddleware } from 'src/engine/metadata-modules/ai/ai-models/middleware/deduplicate-mistral-tool-call-ids.middleware';
 import { sanitizeGeminiToolResultRefsMiddleware } from 'src/engine/metadata-modules/ai/ai-models/middleware/sanitize-gemini-tool-result-refs.middleware';
 import { type AiProviderConfig } from 'src/engine/metadata-modules/ai/ai-models/types/ai-provider-config.type';
 
@@ -101,7 +102,9 @@ export class SdkProviderFactoryService {
           middleware: sanitizeGeminiToolResultRefsMiddleware,
         });
       case AI_SDK_MISTRAL:
-        return this.buildStandardProvider(config, createMistral);
+        return this.buildStandardProvider(config, createMistral, {
+          middleware: deduplicateMistralToolCallIdsMiddleware,
+        });
       case AI_SDK_XAI:
         return this.buildXaiProvider(config);
       case AI_SDK_BEDROCK:

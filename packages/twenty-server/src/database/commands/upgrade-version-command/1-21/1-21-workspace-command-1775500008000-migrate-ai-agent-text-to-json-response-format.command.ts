@@ -213,7 +213,7 @@ export class MigrateAiAgentTextToJsonResponseFormatCommand extends ActiveOrSuspe
       if (versionModified) {
         await workflowVersionRepository.update(version.id, {
           steps: updatedSteps as WorkflowAction[],
-        });
+        } as any);
         updatedVersionCount++;
       }
     }

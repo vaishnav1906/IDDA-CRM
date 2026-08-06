@@ -28,8 +28,6 @@ import {
 } from 'twenty-ui/icon';
 import { FieldMetadataType } from '~/generated-metadata/graphql';
 
-//TODO : isIncludedInUniqueConstraint refactor - https://github.com/twentyhq/core-team-issues/issues/1097
-
 export type CompositeSubFieldConfig<T> = {
   subFieldName: keyof T;
   subFieldLabel: string;
@@ -121,20 +119,19 @@ export const SETTINGS_COMPOSITE_FIELD_TYPE_CONFIGS = {
     ],
     exampleValues: [
       {
-        primaryEmail: 'tim@twenty.com',
+        primaryEmail: 'alice@example.com',
         additionalEmails: [
-          'tim@twenty.com',
-          'timapple@twenty.com',
-          'johnappletim@twenty.com',
+          'alice@example.com',
+          'alice.smith@clinic.com',
         ],
       },
       {
-        primaryEmail: 'jane@twenty.com',
-        additionalEmails: ['jane@twenty.com', 'jane.doe@twenty.com'],
+        primaryEmail: 'bob@example.com',
+        additionalEmails: ['bob@example.com', 'b.jones@clinic.com'],
       },
       {
-        primaryEmail: 'john@twenty.com',
-        additionalEmails: ['john.doe@twenty.com'],
+        primaryEmail: 'carol@example.com',
+        additionalEmails: ['carol.r@example.com'],
       },
     ],
     category: 'Basic',
@@ -179,14 +176,14 @@ export const SETTINGS_COMPOSITE_FIELD_TYPE_CONFIGS = {
     ],
     exampleValues: [
       {
-        primaryLinkUrl: 'twenty.com',
+        primaryLinkUrl: 'example.com',
         primaryLinkLabel: '',
-        secondaryLinks: [{ url: 'twenty.com', label: 'Twenty' }],
+        secondaryLinks: [{ url: 'example.com/contact', label: 'Contact' }],
       },
       {
-        primaryLinkUrl: 'github.com/twentyhq/twenty',
-        primaryLinkLabel: 'Twenty Repo',
-        secondaryLinks: [{ url: 'twenty.com', label: '' }],
+        primaryLinkUrl: 'clinic.example.com',
+        primaryLinkLabel: 'Clinic Website',
+        secondaryLinks: [{ url: 'example.com', label: '' }],
       },
       {
         primaryLinkUrl: 'react.dev',

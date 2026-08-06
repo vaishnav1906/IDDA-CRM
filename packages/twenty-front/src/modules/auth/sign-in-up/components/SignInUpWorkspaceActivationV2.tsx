@@ -14,9 +14,10 @@ const STEPS_CONTAINER_HEIGHT_IN_PX = STEP_HEIGHT_IN_PX * VISIBLE_STEP_COUNT;
 const StyledLogo = styled.img`
   animation: signInUpWorkspaceActivationLogoPulse 0.8s ease-in-out infinite
     alternate;
-  height: ${themeCssVariables.spacing[12]};
+  height: auto;
   margin-bottom: ${themeCssVariables.spacing[8]};
-  width: ${themeCssVariables.spacing[12]};
+  max-width: 160px;
+  width: 160px;
 
   @keyframes signInUpWorkspaceActivationLogoPulse {
     from {
@@ -65,7 +66,7 @@ export const SignInUpWorkspaceActivationV2 = ({
 
   return (
     <>
-      <StyledLogo src="/images/integrations/twenty-logo.svg" alt="" />
+      <StyledLogo src="/images/integrations/idda-crm-logo.png" alt="IDDA CRM" />
       <StyledStepsContainer>
         {messages.map((message, index) => {
           const stepOffset = index - messageIndex;

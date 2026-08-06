@@ -11,7 +11,8 @@ import { DefaultLayout } from '@/ui/layout/page/components/DefaultLayout';
 import { MainAppLayoutWithSidePanel } from '@/ui/layout/page/components/MainAppLayoutWithSidePanel';
 import { AppPath } from 'twenty-shared/types';
 
-import { lazy } from 'react';
+import { lazy, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -33,6 +34,12 @@ const RecordShowPage = lazy(() =>
 const SignInUp = lazy(() =>
   import('~/pages/auth/SignInUp').then((module) => ({
     default: module.SignInUp,
+  })),
+);
+
+const RequestAccess = lazy(() =>
+  import('~/pages/auth/RequestAccess').then((module) => ({
+    default: module.RequestAccess,
   })),
 );
 
@@ -132,6 +139,34 @@ const NotFound = lazy(() =>
   })),
 );
 
+const IddaNotificationsPage = lazy(() =>
+  import('~/pages/notifications/IddaNotificationsPage').then((module) => ({
+    default: module.IddaNotificationsPage,
+  })),
+);
+
+const DecisionRegisterRedirect = ({ path }: { path: string }) => {
+  useEffect(() => { window.location.href = path; }, [path]);
+  return null;
+};
+
+const MedLeadsRedirect = () => {
+  useEffect(() => { window.location.href = '/medleads'; }, []);
+  return null;
+};
+
+const DecisionRegisterDetailRedirect = () => {
+  const { id } = useParams<{ id: string }>();
+  useEffect(() => { if (id) window.location.href = `/decision-register/detail.html?id=${id}`; }, [id]);
+  return null;
+};
+
+const DecisionRegisterEditRedirect = () => {
+  const { id } = useParams<{ id: string }>();
+  useEffect(() => { if (id) window.location.href = `/decision-register/edit.html?id=${id}`; }, [id]);
+  return null;
+};
+
 export const useCreateAppRouter = (
   isFunctionSettingsEnabled?: boolean,
   isAdminPageEnabled?: boolean,
@@ -152,6 +187,14 @@ export const useCreateAppRouter = (
             element={
               <LazyRoute fallback={null}>
                 <SignInUp />
+              </LazyRoute>
+            }
+          />
+          <Route
+            path={AppPath.RequestAccess}
+            element={
+              <LazyRoute fallback={null}>
+                <RequestAccess />
               </LazyRoute>
             }
           />
@@ -260,6 +303,34 @@ export const useCreateAppRouter = (
                   <StandalonePageLayoutPage />
                 </LazyRoute>
               }
+            />
+            <Route
+              path="/notifications"
+              element={
+                <LazyRoute>
+                  <IddaNotificationsPage />
+                </LazyRoute>
+              }
+            />
+            <Route
+              path="/medleads"
+              element={<MedLeadsRedirect />}
+            />
+            <Route
+              path="/decision-register"
+              element={<DecisionRegisterRedirect path="/decision-register/dashboard.html" />}
+            />
+            <Route
+              path="/decision-register/new"
+              element={<DecisionRegisterRedirect path="/decision-register/create.html" />}
+            />
+            <Route
+              path="/decision-register/:id/edit"
+              element={<DecisionRegisterEditRedirect />}
+            />
+            <Route
+              path="/decision-register/:id"
+              element={<DecisionRegisterDetailRedirect />}
             />
             <Route
               path={AppPath.SettingsCatchAll}

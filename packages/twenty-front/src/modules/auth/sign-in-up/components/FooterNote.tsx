@@ -1,5 +1,7 @@
 import { styled } from '@linaria/react';
 import { Trans } from '@lingui/react/macro';
+import { Link } from 'react-router-dom';
+import { AppPath } from 'twenty-shared/types';
 
 import { useWorkspaceBypass } from '@/auth/sign-in-up/hooks/useWorkspaceBypass';
 import { useIsCurrentLocationOnAWorkspace } from '@/domain-manager/hooks/useIsCurrentLocationOnAWorkspace';
@@ -69,9 +71,9 @@ export const FooterNote = ({
   if (!isOnAWorkspace) {
     return (
       <StyledCopyContainer>
-        <Trans>By using Twenty, you agree to the</Trans>{' '}
+        <Trans>By using IDDA CRM, you agree to the</Trans>{' '}
         <a
-          href="https://twenty.com/legal/terms"
+          href="https://idda-crm.com/legal/terms"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -80,7 +82,7 @@ export const FooterNote = ({
         <Trans>and</Trans>{' '}
         {secondaryAgreement === 'dataProcessingAgreement' ? (
           <a
-            href="https://twenty.com/legal/dpa"
+            href="https://idda-crm.com/legal/dpa"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -88,7 +90,7 @@ export const FooterNote = ({
           </a>
         ) : (
           <a
-            href="https://twenty.com/legal/privacy"
+            href="https://idda-crm.com/legal/privacy"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -110,8 +112,12 @@ export const FooterNote = ({
           <StyledSeparator>•</StyledSeparator>
         </>
       )}
+      <Link to={AppPath.RequestAccess}>
+        <Trans>Request Access</Trans>
+      </Link>
+      <StyledSeparator>•</StyledSeparator>
       <a
-        href="https://twenty.com/legal/privacy"
+        href="https://idda-crm.com/legal/privacy"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -119,7 +125,7 @@ export const FooterNote = ({
       </a>
       <StyledSeparator>•</StyledSeparator>
       <a
-        href="https://twenty.com/legal/terms"
+        href="https://idda-crm.com/legal/terms"
         target="_blank"
         rel="noopener noreferrer"
       >

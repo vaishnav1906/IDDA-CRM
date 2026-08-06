@@ -200,7 +200,7 @@ export class WorkflowVersionEdgeWorkspaceService {
 
     await workflowVersionRepository.update(workflowVersion.id, {
       trigger: updatedTrigger,
-    });
+    } as any);
 
     return computeWorkflowVersionStepChanges({
       existingTrigger: trigger,
@@ -266,7 +266,7 @@ export class WorkflowVersionEdgeWorkspaceService {
     if (shouldPersist) {
       await workflowVersionRepository.update(workflowVersion.id, {
         steps: updatedSteps,
-      });
+      } as any);
     }
 
     return computeWorkflowVersionStepChanges({
@@ -403,7 +403,7 @@ export class WorkflowVersionEdgeWorkspaceService {
 
     await workflowVersionRepository.update(workflowVersion.id, {
       trigger: updatedTrigger,
-    });
+    } as any);
 
     return computeWorkflowVersionStepChanges({
       existingTrigger: trigger,
@@ -483,7 +483,7 @@ export class WorkflowVersionEdgeWorkspaceService {
 
     await workflowVersionRepository.update(workflowVersion.id, {
       steps: updatedSteps,
-    });
+    } as any);
 
     return computeWorkflowVersionStepChanges({
       existingTrigger: trigger,

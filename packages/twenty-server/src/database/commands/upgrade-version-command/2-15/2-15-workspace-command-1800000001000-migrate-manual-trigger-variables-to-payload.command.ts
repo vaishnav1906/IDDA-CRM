@@ -88,7 +88,7 @@ export class MigrateManualTriggerVariablesToPayloadCommand extends ActiveOrSuspe
 
       await workflowVersionRepository.update(version.id, {
         steps: migratedSteps.value,
-      });
+      } as any);
     }
 
     if (updatedVersionCount > 0) {

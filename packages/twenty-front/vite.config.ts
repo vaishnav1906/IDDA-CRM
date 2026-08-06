@@ -49,6 +49,17 @@ export default defineConfig(({ mode }) => {
 
     server: {
       port: port,
+      proxy: {
+        '/api': {
+          target: 'http://localhost:3000',
+          changeOrigin: true,
+        },
+        '/medleads': {
+          target: 'http://localhost:3002',
+          changeOrigin: true,
+          ws: true,
+        },
+      },
       ...(VITE_HOST ? { host: VITE_HOST } : {}),
       ...(SSL_KEY_PATH && SSL_CERT_PATH
         ? {

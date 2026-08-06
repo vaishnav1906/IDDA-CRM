@@ -3,6 +3,7 @@ import { AI_ACTIONS } from '@/workflow/workflow-steps/workflow-actions/constants
 import { CORE_ACTIONS } from '@/workflow/workflow-steps/workflow-actions/constants/CoreActions';
 import { FLOW_ACTIONS } from '@/workflow/workflow-steps/workflow-actions/constants/FlowActions';
 import { HUMAN_INPUT_ACTIONS } from '@/workflow/workflow-steps/workflow-actions/constants/HumanInputActions';
+import { IDDA_ACTIONS } from '@/workflow/workflow-steps/workflow-actions/constants/IddaActions';
 import { RECORD_ACTIONS } from '@/workflow/workflow-steps/workflow-actions/constants/RecordActions';
 import { msg } from '@lingui/core/macro';
 
@@ -29,6 +30,10 @@ export const getActionHeaderTypeOrThrow = (actionType: WorkflowActionType) => {
 
   if (actionType === 'LOGIC_FUNCTION') {
     return msg`Application`;
+  }
+
+  if (IDDA_ACTIONS.some((action) => action.type === actionType)) {
+    return msg`IDDA`;
   }
 
   return msg`Action`;

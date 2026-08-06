@@ -20,6 +20,17 @@ import { MedleadsImportService } from 'src/modules/lead/services/medleads-import
 
 const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
 
+// Inline type avoids a dependency on @types/multer while preserving the shape
+// expected by NestJS FileInterceptor + UploadedFile decorator.
+type UploadedMulterFile = {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  size: number;
+  buffer: Buffer;
+};
+
 @Controller('rest/leads')
 @UseGuards(JwtAuthGuard, WorkspaceAuthGuard, NoPermissionGuard)
 @UseFilters(MedleadsImportRestApiExceptionFilter)
@@ -34,7 +45,7 @@ export class MedleadsImportController {
     FileInterceptor('file', { limits: { fileSize: MAX_FILE_SIZE_BYTES } }),
   )
   async importCsv(
-    @UploadedFile() file: Express.Multer.File | undefined,
+    @UploadedFile() file: UploadedMulterFile | undefined,
   ): Promise<MedleadsImportResultDto> {
     if (!file) {
       throw new MedleadsImportException(

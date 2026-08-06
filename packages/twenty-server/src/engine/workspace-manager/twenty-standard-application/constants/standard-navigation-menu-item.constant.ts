@@ -17,40 +17,68 @@ export const STANDARD_NAVIGATION_MENU_ITEMS = {
       STANDARD_OBJECTS.person.views.allPeople.universalIdentifier,
     position: 1,
   },
+  allLeads: {
+    universalIdentifier: '20202020-b00b-4b0b-8b0b-c0aba11c000b',
+    type: NavigationMenuItemType.OBJECT,
+    viewUniversalIdentifier:
+      STANDARD_OBJECTS.lead.views.allLeads.universalIdentifier,
+    position: 2,
+  },
+  allCandidates: {
+    universalIdentifier: '20202020-b00e-4b0e-8b0e-c0aba11c000e',
+    type: NavigationMenuItemType.OBJECT,
+    viewUniversalIdentifier:
+      STANDARD_OBJECTS.candidate.views.allCandidates.universalIdentifier,
+    position: 3,
+  },
+  allTeamMembers: {
+    universalIdentifier: '20202020-b00c-4b0c-8b0c-c0aba11c000c',
+    type: NavigationMenuItemType.OBJECT,
+    viewUniversalIdentifier:
+      STANDARD_OBJECTS.teamMember.views.allTeamMembers.universalIdentifier,
+    position: 5,
+  },
+  allVisits: {
+    universalIdentifier: '20202020-b00d-4b0d-8b0d-c0aba11c000d',
+    type: NavigationMenuItemType.OBJECT,
+    viewUniversalIdentifier:
+      STANDARD_OBJECTS.visit.views.allVisits.universalIdentifier,
+    position: 6,
+  },
   allOpportunities: {
     universalIdentifier: '20202020-b004-4b04-8b04-c0aba11c0004',
     type: NavigationMenuItemType.OBJECT,
     viewUniversalIdentifier:
       STANDARD_OBJECTS.opportunity.views.allOpportunities.universalIdentifier,
-    position: 2,
+    position: 7,
   },
   allTasks: {
     universalIdentifier: '20202020-b006-4b06-8b06-c0aba11c0006',
     type: NavigationMenuItemType.OBJECT,
     viewUniversalIdentifier:
       STANDARD_OBJECTS.task.views.allTasks.universalIdentifier,
-    position: 3,
+    position: 8,
   },
   allNotes: {
     universalIdentifier: '20202020-b003-4b03-8b03-c0aba11c0003',
     type: NavigationMenuItemType.OBJECT,
     viewUniversalIdentifier:
       STANDARD_OBJECTS.note.views.allNotes.universalIdentifier,
-    position: 4,
+    position: 9,
   },
   allDashboards: {
     universalIdentifier: '20202020-b002-4b02-8b02-c0aba11c0002',
     type: NavigationMenuItemType.OBJECT,
     viewUniversalIdentifier:
       STANDARD_OBJECTS.dashboard.views.allDashboards.universalIdentifier,
-    position: 5,
+    position: 10,
   },
   workflowsFolder: {
     universalIdentifier: '20202020-b007-4b07-8b07-c0aba11c0007',
     type: NavigationMenuItemType.FOLDER,
     name: 'Workflows',
     icon: 'IconSettingsAutomation',
-    position: 6,
+    position: 11,
   },
   workflowsFolderAllWorkflows: {
     universalIdentifier: '20202020-b008-4b08-8b08-c0aba11c0008',
@@ -84,6 +112,9 @@ export const STANDARD_NAVIGATION_MENU_ITEM_DEFAULT_COLORS: Partial<
 > = {
   allCompanies: 'blue',
   allPeople: 'blue',
+  allLeads: 'green',
+  allCandidates: 'purple',
+  allVisits: 'turquoise',
   allTasks: 'turquoise',
   allNotes: 'turquoise',
   allOpportunities: 'red',

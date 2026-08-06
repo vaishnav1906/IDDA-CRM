@@ -62,6 +62,23 @@ export const SEARCH_FIELDS_BY_STANDARD_OBJECT_NAME = {
     { name: 'phone', type: FieldMetadataType.TEXT },
     { name: 'city', type: FieldMetadataType.TEXT },
   ],
+  candidate: [
+    { name: 'name', type: FieldMetadataType.TEXT },
+    { name: 'phone', type: FieldMetadataType.TEXT },
+    { name: 'email', type: FieldMetadataType.TEXT },
+  ],
+  inAppNotification: [
+    { name: 'title', type: FieldMetadataType.TEXT },
+  ],
+  teamMember: [
+    { name: 'name', type: FieldMetadataType.FULL_NAME },
+    { name: 'workEmail', type: FieldMetadataType.TEXT },
+    { name: 'roleLabel', type: FieldMetadataType.TEXT },
+  ],
+  visit: [
+    { name: 'visitAddress', type: FieldMetadataType.TEXT },
+    { name: 'visitNotes', type: FieldMetadataType.TEXT },
+  ],
 } satisfies {
   [ObjectName in AllStandardObjectName]: {
     name: AllStandardObjectFieldName<ObjectName>;

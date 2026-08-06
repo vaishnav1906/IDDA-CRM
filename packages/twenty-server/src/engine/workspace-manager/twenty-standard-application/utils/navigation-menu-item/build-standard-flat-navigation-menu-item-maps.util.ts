@@ -14,11 +14,14 @@ import {
 
 const FLAT_NAVIGATION_MENU_ITEM_NAMES = [
   'allCompanies',
-  'allDashboards',
-  'allNotes',
-  'allOpportunities',
   'allPeople',
+  'allLeads',
+  'allTeamMembers',
+  'allVisits',
+  'allOpportunities',
   'allTasks',
+  'allNotes',
+  'allDashboards',
 ] as const;
 
 const WORKFLOWS_FOLDER_ITEM_NAMES = [

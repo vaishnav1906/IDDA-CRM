@@ -16,16 +16,19 @@ import { SignInUpMode } from '@/auth/types/signInUpMode';
 import { isRequestingCaptchaTokenState } from '@/captcha/states/isRequestingCaptchaTokenState';
 import { captchaState } from '@/client-config/states/captchaState';
 import { isDDLLockedState } from '@/client-config/states/isDDLLockedState';
+import { REMEMBER_ME_LOCAL_STORAGE_KEY } from '@/auth/constants/RememberMeLocalStorageKey';
 import { styled } from '@linaria/react';
-import { useLingui } from '@lingui/react/macro';
+import { Trans, useLingui } from '@lingui/react/macro';
 import { useMemo, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { isDefined } from 'twenty-shared/utils';
 import { Loader } from 'twenty-ui/feedback';
+import { Checkbox, CheckboxVariant } from 'twenty-ui/input';
 import { MainButton } from 'twenty-ui/input';
 import { InputHint } from '@/ui/input/components/InputHint';
 import { useAtomState } from '@/ui/utilities/state/jotai/hooks/useAtomState';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
+import { themeCssVariables } from 'twenty-ui/theme-constants';
 
 const StyledForm = styled.form`
   align-items: center;
@@ -33,6 +36,22 @@ const StyledForm = styled.form`
   flex-direction: column;
   max-width: 100%;
   width: 100%;
+`;
+
+const StyledRememberMeRow = styled.div`
+  align-items: center;
+  display: flex;
+  gap: ${themeCssVariables.spacing[2]};
+  justify-content: flex-start;
+  margin-bottom: ${themeCssVariables.spacing[3]};
+  width: 100%;
+`;
+
+const StyledRememberMeLabel = styled.label`
+  color: ${themeCssVariables.font.color.secondary};
+  cursor: pointer;
+  font-size: ${themeCssVariables.font.size.sm};
+  user-select: none;
 `;
 
 export const SignInUpWithCredentials = ({
@@ -54,6 +73,23 @@ export const SignInUpWithCredentials = ({
     lastAuthenticatedMethodState,
   );
   const hasMultipleAuthMethods = useHasMultipleAuthMethods();
+
+  const [rememberMe, setRememberMe] = useState<boolean>(() => {
+    const stored = localStorage.getItem(REMEMBER_ME_LOCAL_STORAGE_KEY);
+    return stored !== 'false';
+  });
+
+  const handleRememberMeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = event.target.checked;
+    setRememberMe(checked);
+    localStorage.setItem(REMEMBER_ME_LOCAL_STORAGE_KEY, String(checked));
+  };
+
+  const toggleRememberMe = () => {
+    const next = !rememberMe;
+    setRememberMe(next);
+    localStorage.setItem(REMEMBER_ME_LOCAL_STORAGE_KEY, String(next));
+  };
 
   const {
     signInUpMode,
@@ -125,8 +161,6 @@ export const SignInUpWithCredentials = ({
     signInUpStep === SignInUpStep.Email &&
     (isDefined(form.formState.errors['email']) || shouldWaitForCaptchaToken);
 
-  // TODO: isValid is actually a proxy function. If it is not rendered the first time, react might not trigger re-renders
-  // We make the isValid check synchronous and update a reactState to make sure this does not happen
   const isPasswordStepSubmitButtonDisabledCondition =
     signInUpStep === SignInUpStep.Password &&
     (!form.formState.isValid ||
@@ -142,6 +176,10 @@ export const SignInUpWithCredentials = ({
     isEmailStepSubmitButtonDisabledCondition ||
     isPasswordStepSubmitButtonDisabledCondition ||
     isSignUpBlockedByDDLLock;
+
+  const showRememberMe =
+    signInUpStep === SignInUpStep.Password &&
+    signInUpMode === SignInUpMode.SignIn;
 
   return (
     <>
@@ -160,6 +198,18 @@ export const SignInUpWithCredentials = ({
               showErrors={showErrors}
               signInUpMode={signInUpMode}
             />
+          )}
+          {showRememberMe && (
+            <StyledRememberMeRow>
+              <Checkbox
+                checked={rememberMe}
+                onChange={handleRememberMeChange}
+                variant={CheckboxVariant.Primary}
+              />
+              <StyledRememberMeLabel onClick={toggleRememberMe}>
+                <Trans>Remember me</Trans>
+              </StyledRememberMeLabel>
+            </StyledRememberMeRow>
           )}
           <StyledSSOButtonContainer>
             <MainButton

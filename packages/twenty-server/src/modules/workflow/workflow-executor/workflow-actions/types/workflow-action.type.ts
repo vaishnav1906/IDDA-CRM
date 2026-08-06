@@ -1,5 +1,16 @@
 import { WorkflowActionType } from 'twenty-shared/workflow';
 
+import { type WorkflowNotifyActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-notify/types/workflow-notify-action-settings.type';
+import { type WorkflowAssignLeadActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-assign-lead/types/workflow-assign-lead-action-settings.type';
+import { type WorkflowUpdateSlaActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-update-sla/types/workflow-update-sla-action-settings.type';
+import { type WorkflowSubscriptionTaskActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-subscription-task/types/workflow-subscription-task-action-settings.type';
+import { type WorkflowCheckLeadNextStepActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-lead-next-step/types/workflow-check-lead-next-step-action-settings.type';
+import { type WorkflowCheckFirstContactSlaActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-first-contact-sla/types/workflow-check-first-contact-sla-action-settings.type';
+import { type WorkflowCheckMissedFollowupsActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-missed-followups/types/workflow-check-missed-followups-action-settings.type';
+import { type WorkflowHandleOppWonActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-handle-opp-won/types/workflow-handle-opp-won-action-settings.type';
+import { type WorkflowSendTaskEmailActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-send-task-email/types/workflow-send-task-email-action-settings.type';
+import { type WorkflowCheckCandidateFollowupsActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-candidate-followups/types/workflow-check-candidate-followups-action-settings.type';
+import { type WorkflowCheckStaleLeadsActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-stale-leads/types/workflow-check-stale-leads-action-settings.type';
 import { type WorkflowAiAgentActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/ai-agent/types/workflow-ai-agent-action-settings.type';
 import { type WorkflowCodeActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/code/types/workflow-code-action-settings.type';
 import { type WorkflowCreateCalendarEventActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/create-calendar-event/types/workflow-create-calendar-event-action-settings.type';
@@ -128,6 +139,61 @@ export type WorkflowDelayAction = BaseWorkflowAction & {
   settings: WorkflowDelayActionSettings;
 };
 
+export type WorkflowNotifyAction = BaseWorkflowAction & {
+  type: WorkflowActionType.IDDA_NOTIFY;
+  settings: WorkflowNotifyActionSettings;
+};
+
+export type WorkflowAssignLeadAction = BaseWorkflowAction & {
+  type: WorkflowActionType.IDDA_ASSIGN_LEAD;
+  settings: WorkflowAssignLeadActionSettings;
+};
+
+export type WorkflowUpdateSlaAction = BaseWorkflowAction & {
+  type: WorkflowActionType.IDDA_UPDATE_SLA;
+  settings: WorkflowUpdateSlaActionSettings;
+};
+
+export type WorkflowCreateSubscriptionTaskAction = BaseWorkflowAction & {
+  type: WorkflowActionType.IDDA_CREATE_SUBSCRIPTION_TASK;
+  settings: WorkflowSubscriptionTaskActionSettings;
+};
+
+export type WorkflowCheckLeadNextStepAction = BaseWorkflowAction & {
+  type: WorkflowActionType.IDDA_CHECK_LEAD_NEXT_STEP;
+  settings: WorkflowCheckLeadNextStepActionSettings;
+};
+
+export type WorkflowCheckFirstContactSlaAction = BaseWorkflowAction & {
+  type: WorkflowActionType.IDDA_CHECK_FIRST_CONTACT_SLA;
+  settings: WorkflowCheckFirstContactSlaActionSettings;
+};
+
+export type WorkflowCheckMissedFollowupsAction = BaseWorkflowAction & {
+  type: WorkflowActionType.IDDA_CHECK_MISSED_FOLLOWUPS;
+  settings: WorkflowCheckMissedFollowupsActionSettings;
+};
+
+export type WorkflowHandleOppWonAction = BaseWorkflowAction & {
+  type: WorkflowActionType.IDDA_HANDLE_OPP_WON;
+  settings: WorkflowHandleOppWonActionSettings;
+};
+
+export type WorkflowSendTaskEmailAction = BaseWorkflowAction & {
+  type: WorkflowActionType.IDDA_SEND_TASK_EMAIL;
+  settings: WorkflowSendTaskEmailActionSettings;
+};
+
+export type WorkflowCheckCandidateFollowupsAction = BaseWorkflowAction & {
+  type: WorkflowActionType.IDDA_CHECK_CANDIDATE_FOLLOWUPS;
+  settings: WorkflowCheckCandidateFollowupsActionSettings;
+};
+
+export type WorkflowCheckStaleLeadsAction = BaseWorkflowAction & {
+  type: WorkflowActionType.IDDA_CHECK_STALE_LEADS;
+  settings: WorkflowCheckStaleLeadsActionSettings;
+};
+
 export type WorkflowAction =
   | WorkflowCodeAction
   | WorkflowLogicFunctionAction
@@ -147,4 +213,15 @@ export type WorkflowAction =
   | WorkflowAiAgentAction
   | WorkflowIteratorAction
   | WorkflowEmptyAction
-  | WorkflowDelayAction;
+  | WorkflowDelayAction
+  | WorkflowNotifyAction
+  | WorkflowAssignLeadAction
+  | WorkflowUpdateSlaAction
+  | WorkflowCreateSubscriptionTaskAction
+  | WorkflowCheckLeadNextStepAction
+  | WorkflowCheckFirstContactSlaAction
+  | WorkflowCheckMissedFollowupsAction
+  | WorkflowHandleOppWonAction
+  | WorkflowSendTaskEmailAction
+  | WorkflowCheckCandidateFollowupsAction
+  | WorkflowCheckStaleLeadsAction;

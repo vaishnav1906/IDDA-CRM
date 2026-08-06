@@ -64,6 +64,11 @@ export const WorkflowDiagramStepNodeIcon = ({
         case 'FILTER':
         case 'ITERATOR':
           return <Icon size={theme.icon.size.md} color={theme.color.green12} />;
+        case 'IDDA_NOTIFY':
+        case 'IDDA_ASSIGN_LEAD':
+        case 'IDDA_UPDATE_SLA':
+        case 'IDDA_CREATE_SUBSCRIPTION_TASK':
+          return <Icon size={theme.icon.size.md} color={theme.color.blue} />;
         default: {
           return (
             <Icon

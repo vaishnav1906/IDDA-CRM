@@ -109,6 +109,7 @@ import { TimelineActivitySeederService } from 'src/engine/workspace-manager/dev-
 import { prefillFrontComponentCommandMenuItems } from 'src/engine/workspace-manager/standard-objects-prefill-data/utils/prefill-front-component-command-menu-items.util';
 import { prefillWorkflowCommandMenuItems } from 'src/engine/workspace-manager/standard-objects-prefill-data/utils/prefill-workflow-command-menu-items.util';
 import { prefillWorkflows } from 'src/engine/workspace-manager/standard-objects-prefill-data/utils/prefill-workflows.util';
+import { prefillIddaWorkflows } from 'src/engine/workspace-manager/standard-objects-prefill-data/utils/prefill-idda-workflows.util';
 import { TWENTY_STANDARD_APPLICATION } from 'src/engine/workspace-manager/twenty-standard-application/constants/twenty-standard-applications';
 import { WorkspaceMigrationValidateBuildAndRunService } from 'src/engine/workspace-manager/workspace-migration/services/workspace-migration-validate-build-and-run-service';
 
@@ -327,6 +328,14 @@ export class DevSeederDataService {
         }
 
         await prefillWorkflows(
+          entityManager,
+          workspaceId,
+          schemaName,
+          flatObjectMetadataMaps,
+          flatFieldMetadataMaps,
+        );
+
+        await prefillIddaWorkflows(
           entityManager,
           workspaceId,
           schemaName,

@@ -1,6 +1,6 @@
 import { useLingui } from '@lingui/react/macro';
 import { SettingsPath } from 'twenty-shared/types';
-import { IconHelpCircle, IconSettings } from 'twenty-ui/icon';
+import { IconBell, IconCalendar, IconFileCheck, IconHelpCircle, IconHeartRateMonitor, IconSettings } from 'twenty-ui/icon';
 import { AnimatedExpandableContainer } from 'twenty-ui/layout';
 
 import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
@@ -15,6 +15,7 @@ import { useNavigationSection } from '@/ui/navigation/navigation-drawer/hooks/us
 import { isNavigationSectionOpenFamilyState } from '@/ui/navigation/navigation-drawer/states/isNavigationSectionOpenFamilyState';
 import { useAtomFamilyStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomFamilyStateValue';
 import { useNavigateSettings } from '~/hooks/useNavigateSettings';
+import { IddaNotificationBell } from '@/navigation/components/IddaNotificationBell';
 
 export const NavigationDrawerOtherSection = () => {
   const { t } = useLingui();
@@ -29,6 +30,10 @@ export const NavigationDrawerOtherSection = () => {
 
   const handleSettingsClick = () => {
     navigateSettings(SettingsPath.ProfilePage);
+  };
+
+  const handleBusinessCalendarClick = () => {
+    navigateSettings(SettingsPath.IddaBusinessCalendar);
   };
 
   return (
@@ -47,6 +52,28 @@ export const NavigationDrawerOtherSection = () => {
         containAnimation
         initial={false}
       >
+        <NavigationDrawerItem
+          label={t`Notifications`}
+          Icon={IconBell}
+          to="/notifications"
+          rightOptions={<IddaNotificationBell />}
+          alwaysShowRightOptions
+        />
+        <NavigationDrawerItem
+          label={t`MedLeads`}
+          Icon={IconHeartRateMonitor}
+          to="/medleads"
+        />
+        <NavigationDrawerItem
+          label={t`Decision Register`}
+          Icon={IconFileCheck}
+          to="/decision-register"
+        />
+        <NavigationDrawerItem
+          label={t`Business Calendar`}
+          Icon={IconCalendar}
+          onClick={handleBusinessCalendarClick}
+        />
         <NavigationDrawerItem
           label={t`Settings`}
           Icon={IconSettings}

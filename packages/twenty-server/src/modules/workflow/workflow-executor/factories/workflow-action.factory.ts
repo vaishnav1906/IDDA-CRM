@@ -26,6 +26,17 @@ import { PickRecordWorkflowAction } from 'src/modules/workflow/workflow-executor
 import { UpdateRecordWorkflowAction } from 'src/modules/workflow/workflow-executor/workflow-actions/record-crud/update-record.workflow-action';
 import { UpsertRecordWorkflowAction } from 'src/modules/workflow/workflow-executor/workflow-actions/record-crud/upsert-record.workflow-action';
 import { WorkflowActionType } from 'twenty-shared/workflow';
+import { NotifyWorkflowAction } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-notify/notify.workflow-action';
+import { AssignLeadWorkflowAction } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-assign-lead/assign-lead.workflow-action';
+import { UpdateSlaWorkflowAction } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-update-sla/update-sla.workflow-action';
+import { CreateSubscriptionTaskWorkflowAction } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-subscription-task/create-subscription-task.workflow-action';
+import { CheckLeadNextStepWorkflowAction } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-lead-next-step/check-lead-next-step.workflow-action';
+import { CheckFirstContactSlaWorkflowAction } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-first-contact-sla/check-first-contact-sla.workflow-action';
+import { CheckMissedFollowupsWorkflowAction } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-missed-followups/check-missed-followups.workflow-action';
+import { HandleOppWonWorkflowAction } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-handle-opp-won/handle-opp-won.workflow-action';
+import { SendTaskEmailWorkflowAction } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-send-task-email/send-task-email.workflow-action';
+import { CheckCandidateFollowupsWorkflowAction } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-candidate-followups/check-candidate-followups.workflow-action';
+import { CheckStaleLeadsWorkflowAction } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-stale-leads/check-stale-leads.workflow-action';
 
 @Injectable()
 export class WorkflowActionFactory {
@@ -49,6 +60,17 @@ export class WorkflowActionFactory {
     private readonly aiAgentWorkflowAction: AiAgentWorkflowAction,
     private readonly emptyWorkflowAction: EmptyWorkflowAction,
     private readonly delayWorkflowAction: DelayWorkflowAction,
+    private readonly notifyWorkflowAction: NotifyWorkflowAction,
+    private readonly assignLeadWorkflowAction: AssignLeadWorkflowAction,
+    private readonly updateSlaWorkflowAction: UpdateSlaWorkflowAction,
+    private readonly createSubscriptionTaskWorkflowAction: CreateSubscriptionTaskWorkflowAction,
+    private readonly checkLeadNextStepWorkflowAction: CheckLeadNextStepWorkflowAction,
+    private readonly checkFirstContactSlaWorkflowAction: CheckFirstContactSlaWorkflowAction,
+    private readonly checkMissedFollowupsWorkflowAction: CheckMissedFollowupsWorkflowAction,
+    private readonly handleOppWonWorkflowAction: HandleOppWonWorkflowAction,
+    private readonly sendTaskEmailWorkflowAction: SendTaskEmailWorkflowAction,
+    private readonly checkCandidateFollowupsWorkflowAction: CheckCandidateFollowupsWorkflowAction,
+    private readonly checkStaleLeadsWorkflowAction: CheckStaleLeadsWorkflowAction,
   ) {}
 
   get(stepType: WorkflowActionType): WorkflowAction {
@@ -91,6 +113,28 @@ export class WorkflowActionFactory {
         return this.emptyWorkflowAction;
       case WorkflowActionType.DELAY:
         return this.delayWorkflowAction;
+      case WorkflowActionType.IDDA_NOTIFY:
+        return this.notifyWorkflowAction;
+      case WorkflowActionType.IDDA_ASSIGN_LEAD:
+        return this.assignLeadWorkflowAction;
+      case WorkflowActionType.IDDA_UPDATE_SLA:
+        return this.updateSlaWorkflowAction;
+      case WorkflowActionType.IDDA_CREATE_SUBSCRIPTION_TASK:
+        return this.createSubscriptionTaskWorkflowAction;
+      case WorkflowActionType.IDDA_CHECK_LEAD_NEXT_STEP:
+        return this.checkLeadNextStepWorkflowAction;
+      case WorkflowActionType.IDDA_CHECK_FIRST_CONTACT_SLA:
+        return this.checkFirstContactSlaWorkflowAction;
+      case WorkflowActionType.IDDA_CHECK_MISSED_FOLLOWUPS:
+        return this.checkMissedFollowupsWorkflowAction;
+      case WorkflowActionType.IDDA_HANDLE_OPP_WON:
+        return this.handleOppWonWorkflowAction;
+      case WorkflowActionType.IDDA_SEND_TASK_EMAIL:
+        return this.sendTaskEmailWorkflowAction;
+      case WorkflowActionType.IDDA_CHECK_CANDIDATE_FOLLOWUPS:
+        return this.checkCandidateFollowupsWorkflowAction;
+      case WorkflowActionType.IDDA_CHECK_STALE_LEADS:
+        return this.checkStaleLeadsWorkflowAction;
       default:
         throw new WorkflowStepExecutorException(
           `Workflow step executor not found for step type '${stepType}'`,

@@ -57,9 +57,8 @@ export const generateDepthRecordGqlFieldsFromFields = ({
         );
 
         if (!targetObjectMetadataItem) {
-          throw new Error(
-            `Target object metadata item not found for ${fieldMetadata.name}`,
-          );
+          // Target object is inactive or not in workspace — skip this field.
+          return recordGqlFields;
         }
 
         const isActivityTargetField =
@@ -127,7 +126,7 @@ export const generateDepthRecordGqlFieldsFromFields = ({
           );
         }
 
-        const morphGqlFields = fieldMetadata.morphRelations.map(
+        const morphGqlFields = fieldMetadata.morphRelations.flatMap(
           (morphRelation) => {
             const morphTargetObjectMetadataItem = objectMetadataItems.find(
               (objectMetadataItem) =>
@@ -135,25 +134,26 @@ export const generateDepthRecordGqlFieldsFromFields = ({
             );
 
             if (!morphTargetObjectMetadataItem) {
-              throw new Error(
-                `Target object metadata item not found for ${fieldMetadata.name} (morph target ${morphRelation.targetObjectMetadata.nameSingular})`,
-              );
+              // Target object is inactive or not yet in workspace — skip silently.
+              return [];
             }
 
-            return {
-              gqlField: computeMorphRelationGqlFieldName({
-                fieldName: fieldMetadata.name,
-                relationType: morphRelation.type,
-                targetObjectMetadataNameSingular:
-                  morphRelation.targetObjectMetadata.nameSingular,
-                targetObjectMetadataNamePlural:
-                  morphRelation.targetObjectMetadata.namePlural,
-              }),
-              fieldMetadata,
-              relationIdentifierSubGqlFields: buildIdentifierGqlFields(
-                morphTargetObjectMetadataItem,
-              ),
-            };
+            return [
+              {
+                gqlField: computeMorphRelationGqlFieldName({
+                  fieldName: fieldMetadata.name,
+                  relationType: morphRelation.type,
+                  targetObjectMetadataNameSingular:
+                    morphRelation.targetObjectMetadata.nameSingular,
+                  targetObjectMetadataNamePlural:
+                    morphRelation.targetObjectMetadata.namePlural,
+                }),
+                fieldMetadata,
+                relationIdentifierSubGqlFields: buildIdentifierGqlFields(
+                  morphTargetObjectMetadataItem,
+                ),
+              },
+            ];
           },
         );
 

@@ -98,32 +98,46 @@ export class LocalDriver implements StorageDriver {
   }
 
   async downloadFile(params: {
-    onStoragePath: string;
-    localPath: string;
-  }): Promise<void> {
-    const resolvedPath = path.resolve(
-      this.options.storagePath,
-      params.onStoragePath,
+  onStoragePath: string;
+  localPath: string;
+}): Promise<void> {
+  console.log("========== LocalDriver.downloadFile ==========");
+  console.log("Storage Root:", this.options.storagePath);
+  console.log("onStoragePath:", params.onStoragePath);
+  console.log("localPath:", params.localPath);
+
+  const resolvedPath = path.resolve(
+    this.options.storagePath,
+    params.onStoragePath,
+  );
+
+  console.log("Resolved Path:", resolvedPath);
+
+  let filePath: string;
+
+  try {
+    filePath = realpathSync(resolvedPath);
+    console.log("✅ File exists:", filePath);
+  } catch (error) {
+    console.error("❌ File NOT found!");
+    console.error("Resolved Path:", resolvedPath);
+    console.error("Storage Root:", this.options.storagePath);
+    console.error("Original onStoragePath:", params.onStoragePath);
+
+    throw new FileStorageException(
+      'File not found',
+      FileStorageExceptionCode.FILE_NOT_FOUND,
     );
-    let filePath: string;
-
-    try {
-      filePath = realpathSync(resolvedPath);
-    } catch {
-      throw new FileStorageException(
-        'File not found',
-        FileStorageExceptionCode.FILE_NOT_FOUND,
-      );
-    }
-
-    this.assertRealPathIsWithinStorage(filePath);
-
-    await this.createFolder(dirname(params.localPath));
-
-    const content = await fs.readFile(filePath);
-
-    await fs.writeFile(params.localPath, content);
   }
+
+  this.assertRealPathIsWithinStorage(filePath);
+
+  await this.createFolder(dirname(params.localPath));
+
+  const content = await fs.readFile(filePath);
+
+  await fs.writeFile(params.localPath, content);
+}
 
   async downloadFolder(params: {
     onStoragePath: string;

@@ -703,4 +703,26 @@ export const buildCompanyStandardFlatFieldMetadatas = ({
     twentyStandardApplicationId,
     now,
   }),
+  visits: createStandardRelationFieldFlatMetadata({
+    objectName,
+    workspaceId,
+    context: {
+      type: FieldMetadataType.RELATION,
+      morphId: null,
+      fieldName: 'visits',
+      label: i18nLabel(msg`Visits`),
+      description: i18nLabel(msg`Visits linked to this clinic`),
+      icon: 'IconCalendarCheck',
+      isNullable: true,
+      targetObjectName: 'visit',
+      targetFieldName: 'clinic',
+      settings: {
+        relationType: RelationType.ONE_TO_MANY,
+      },
+    },
+    standardObjectMetadataRelatedEntityIds,
+    dependencyFlatEntityMaps,
+    twentyStandardApplicationId,
+    now,
+  }),
 });

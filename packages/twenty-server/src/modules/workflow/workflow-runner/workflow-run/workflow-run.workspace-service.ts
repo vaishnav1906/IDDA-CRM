@@ -131,7 +131,7 @@ export class WorkflowRunWorkspaceService {
           enqueuedAt: status === WorkflowRunStatus.ENQUEUED ? new Date() : null,
         };
 
-        await workflowRunRepository.insert(workflowRun);
+        await workflowRunRepository.insert(workflowRun as any);
 
         return workflowRun.id;
       },
@@ -411,7 +411,8 @@ export class WorkflowRunWorkspaceService {
   }: {
     workflowRunId: string;
     workspaceId: string;
-    partialUpdate: QueryDeepPartialEntity<WorkflowRunWorkspaceEntity>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    partialUpdate: Record<string, any>;
   }) {
     const authContext = buildSystemAuthContext(workspaceId);
 
@@ -436,7 +437,7 @@ export class WorkflowRunWorkspaceService {
 
       await workflowRunRepository.update(
         workflowRunToUpdate.id,
-        partialUpdate,
+        partialUpdate as unknown as QueryDeepPartialEntity<WorkflowRunWorkspaceEntity>,
         undefined,
         undefined,
         ['id'],

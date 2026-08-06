@@ -265,6 +265,32 @@ export const computeStandardLeadViewFields = (
         viewFieldGroupName: 'location',
       },
     }),
+    leadRecordPageFieldsLatitude: createStandardViewFieldFlatMetadata({
+      ...args,
+      objectName: 'lead',
+      context: {
+        viewName: 'leadRecordPageFields',
+        viewFieldName: 'latitude',
+        fieldName: 'latitude',
+        position: 7,
+        isVisible: true,
+        size: 150,
+        viewFieldGroupName: 'location',
+      },
+    }),
+    leadRecordPageFieldsLongitude: createStandardViewFieldFlatMetadata({
+      ...args,
+      objectName: 'lead',
+      context: {
+        viewName: 'leadRecordPageFields',
+        viewFieldName: 'longitude',
+        fieldName: 'longitude',
+        position: 8,
+        isVisible: true,
+        size: 150,
+        viewFieldGroupName: 'location',
+      },
+    }),
 
     // leadRecordPageFields — crm group
     leadRecordPageFieldsStatus: createStandardViewFieldFlatMetadata({

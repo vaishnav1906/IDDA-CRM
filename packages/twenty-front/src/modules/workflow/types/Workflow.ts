@@ -77,6 +77,146 @@ export type WorkflowIteratorAction = z.infer<
 export type WorkflowAiAgentAction = z.infer<typeof workflowAiAgentActionSchema>;
 export type WorkflowEmptyAction = z.infer<typeof workflowEmptyActionSchema>;
 
+// ── IDDA CRM custom action types ─────────────────────────────────────────────
+// These are executed server-side only and have no twenty-shared Zod schemas.
+
+type BaseIddaAction = {
+  id: string;
+  name: string;
+  valid: boolean;
+  nextStepIds?: string[] | null;
+  position?: { x: number; y: number };
+};
+
+type BaseIddaSettings = {
+  outputSchema: Record<string, unknown>;
+  errorHandlingOptions: {
+    retryOnFailure: { value: boolean };
+    continueOnFailure: { value: boolean };
+  };
+};
+
+export type WorkflowIddaNotifyAction = BaseIddaAction & {
+  type: 'IDDA_NOTIFY';
+  settings: BaseIddaSettings & {
+    channel: 'IN_APP' | 'EMAIL' | 'BOTH';
+    notificationType: string;
+    input: {
+      recipientWorkspaceMemberId: string;
+      title: string;
+      body: string;
+      channel?: 'IN_APP' | 'EMAIL' | 'BOTH';
+      notificationType?: string;
+      actionUrl?: string;
+      relatedRecordId?: string;
+      relatedObjectMetadataId?: string;
+    };
+  };
+};
+
+export type WorkflowIddaAssignLeadAction = BaseIddaAction & {
+  type: 'IDDA_ASSIGN_LEAD';
+  settings: BaseIddaSettings & {
+    notifyAssignee: boolean;
+    input: {
+      leadId: string;
+      assigneeWorkspaceMemberId: string;
+      notifyAssignee?: boolean;
+      notificationTitle?: string;
+      notificationBody?: string;
+    };
+  };
+};
+
+export type WorkflowIddaUpdateSlaAction = BaseIddaAction & {
+  type: 'IDDA_UPDATE_SLA';
+  settings: BaseIddaSettings & {
+    defaultSlaHours: number;
+    useBusinessCalendar: boolean;
+    priorityConfig: { priority: string; slaHours: number }[];
+    input: {
+      recordId: string;
+      objectSingularName: string;
+      slaFieldName: string;
+      useBusinessCalendar: boolean;
+      priority?: string;
+      customSlaHours?: number;
+    };
+  };
+};
+
+export type WorkflowIddaCreateSubscriptionTaskAction = BaseIddaAction & {
+  type: 'IDDA_CREATE_SUBSCRIPTION_TASK';
+  settings: BaseIddaSettings & {
+    defaultDueDaysBeforeRenewal: number;
+    notifyAssignee: boolean;
+    input: {
+      subscriptionId: string;
+      renewalDate: string;
+      assigneeWorkspaceMemberId: string;
+      taskTitle?: string;
+      taskBody?: string;
+      dueDaysBeforeRenewal?: number;
+    };
+  };
+};
+
+export type WorkflowIddaSendTaskEmailAction = BaseIddaAction & {
+  type: 'IDDA_SEND_TASK_EMAIL';
+  settings: BaseIddaSettings & {
+    input: {
+      taskId: string;
+      additionalNote?: string;
+    };
+  };
+};
+
+export type WorkflowIddaCheckLeadNextStepAction = BaseIddaAction & {
+  type: 'IDDA_CHECK_LEAD_NEXT_STEP';
+  settings: BaseIddaSettings & {
+    input: { leadId: string; assignedToId?: string };
+  };
+};
+
+export type WorkflowIddaCheckFirstContactSlaAction = BaseIddaAction & {
+  type: 'IDDA_CHECK_FIRST_CONTACT_SLA';
+  settings: BaseIddaSettings & {
+    input: { leadId: string; assignedToId?: string };
+  };
+};
+
+export type WorkflowIddaCheckMissedFollowupsAction = BaseIddaAction & {
+  type: 'IDDA_CHECK_MISSED_FOLLOWUPS';
+  settings: BaseIddaSettings & {
+    input: { activeStatuses?: string[]; limitPerRun?: number };
+  };
+};
+
+export type WorkflowIddaHandleOppWonAction = BaseIddaAction & {
+  type: 'IDDA_HANDLE_OPP_WON';
+  settings: BaseIddaSettings & {
+    input: { opportunityId: string; operationsOwnerId?: string | null };
+  };
+};
+
+export type WorkflowIddaCheckCandidateFollowupsAction = BaseIddaAction & {
+  type: 'IDDA_CHECK_CANDIDATE_FOLLOWUPS';
+  settings: BaseIddaSettings & {
+    input: { activeStatuses?: string[]; limitPerRun?: number };
+  };
+};
+
+export type WorkflowIddaCheckStaleLeadsAction = BaseIddaAction & {
+  type: 'IDDA_CHECK_STALE_LEADS';
+  settings: BaseIddaSettings & {
+    input: {
+      staleDaysThreshold?: number;
+      activeStatuses?: string[];
+      limitPerRun?: number;
+    };
+  };
+};
+
 export type WorkflowAction =
   | WorkflowCodeAction
   | WorkflowLogicFunctionAction
@@ -96,7 +236,18 @@ export type WorkflowAction =
   | WorkflowAiAgentAction
   | WorkflowIteratorAction
   | WorkflowDelayAction
-  | WorkflowEmptyAction;
+  | WorkflowEmptyAction
+  | WorkflowIddaNotifyAction
+  | WorkflowIddaAssignLeadAction
+  | WorkflowIddaUpdateSlaAction
+  | WorkflowIddaCreateSubscriptionTaskAction
+  | WorkflowIddaSendTaskEmailAction
+  | WorkflowIddaCheckLeadNextStepAction
+  | WorkflowIddaCheckFirstContactSlaAction
+  | WorkflowIddaCheckMissedFollowupsAction
+  | WorkflowIddaHandleOppWonAction
+  | WorkflowIddaCheckCandidateFollowupsAction
+  | WorkflowIddaCheckStaleLeadsAction;
 
 export type WorkflowActionType = WorkflowAction['type'];
 export type WorkflowStep = WorkflowAction;

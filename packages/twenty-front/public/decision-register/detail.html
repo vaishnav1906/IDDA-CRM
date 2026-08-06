@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Decision Details</title>
+<style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}}</style>
+<script src="https://cdn.tailwindcss.com"></script>
+<script id="tailwind-config">tailwind.config={theme:{extend:{"colors":{"tertiary-fixed":"#ffdbcd","tertiary-container":"#bc4800","on-secondary":"#ffffff","on-tertiary-container":"#ffede6","secondary":"#505f76","background":"#faf8ff","on-background":"#131b2e","on-primary-container":"#eeefff","error":"#ba1a1a","on-primary":"#ffffff","primary":"#004ac6","outline-variant":"#c3c6d7","on-secondary-container":"#54647a","on-error-container":"#93000a","error-container":"#ffdad6","on-error":"#ffffff","surface-tint":"#0053db","surface":"#faf8ff","surface-variant":"#dae2fd","on-surface":"#131b2e","on-surface-variant":"#434655","surface-container-highest":"#dae2fd","surface-container-lowest":"#ffffff","secondary-fixed":"#d3e4fe","outline":"#737686","surface-container-low":"#f2f3ff","secondary-container":"#d0e1fb","tertiary":"#943700","surface-container-high":"#e2e7ff","primary-container":"#2563eb","surface-container":"#eaedff"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"lg":"24px","md":"16px","gutter":"20px","margin-desktop":"32px","2xl":"48px","sm":"8px","xs":"4px","xl":"32px","margin-mobile":"16px","base":"4px"}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>body{font-family:'Inter',sans-serif;}.material-symbols-outlined{font-family:'Material Symbols Outlined';font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;}</style>
+</head>
+<body class="bg-background text-sm text-on-background">
+
+<aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+  <div class="h-16 flex items-center px-6 gap-2">
+    <span class="material-symbols-outlined text-primary">fact_check</span>
+    <span class="font-semibold text-lg text-on-surface">Decision Register</span>
+  </div>
+  <nav class="flex-1 px-4 mt-6 space-y-1">
+    <a href="dashboard.html" class="flex items-center px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors gap-4">
+      <span class="material-symbols-outlined">dashboard</span>Dashboard
+    </a>
+    <a href="list.html" class="flex items-center px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors gap-4">
+      <span class="material-symbols-outlined">list</span>All Decisions
+    </a>
+    <a href="create.html" class="flex items-center px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors gap-4">
+      <span class="material-symbols-outlined">add_circle</span>New Decision
+    </a>
+    <div class="pt-4 mt-4 border-t border-outline-variant">
+      <a href="http://localhost:3001" class="flex items-center px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors gap-4">
+        <span class="material-symbols-outlined">arrow_back</span>Back to CRM
+      </a>
+    </div>
+  </nav>
+  <div id="userProfile" class="px-4 py-4 border-t border-outline-variant hidden">
+    <div class="flex items-center gap-3">
+      <div id="userAvatar" class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-on-primary font-semibold text-sm flex-shrink-0"></div>
+      <div class="min-w-0">
+        <div id="userName" class="text-sm font-medium text-on-surface truncate"></div>
+        <div id="userRole" class="text-xs text-on-surface-variant truncate"></div>
+      </div>
+      <div id="approverBadge" class="hidden ml-auto">
+        <span class="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded-full font-medium border border-green-200">Approver</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div class="pl-72">
+  <header class="fixed top-0 left-72 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-8">
+    <a href="list.html" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-sm">
+      <span class="material-symbols-outlined">arrow_back</span>Back to Decision Register
+    </a>
+    <div id="headerActions" class="flex items-center gap-3"></div>
+  </header>
+
+  <main class="relative pt-16 w-full min-h-screen bg-background px-8 py-8">
+    <div id="loading" class="p-12 text-center text-on-surface-variant">
+      <span class="material-symbols-outlined text-4xl">progress_activity</span>
+      <p class="mt-4">Loading…</p>
+    </div>
+    <div id="content" class="hidden flex flex-col w-full max-w-5xl mx-auto space-y-5 pb-12"></div>
+  </main>
+</div>
+
+<script>
+const SERVER = 'http://localhost:3000';
+const id = new URLSearchParams(location.search).get('id');
+let me = null;
+
+let _token = null;
+function getToken() { return _token; }
+
+function _getRawPair() {
+  try {
+    const raw = localStorage.getItem('tokenPairState') || sessionStorage.getItem('tokenPairState');
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+function _jwtExpired(token) {
+  try {
+    const p = JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
+    return p.exp * 1000 < Date.now() + 60000;
+  } catch { return false; }
+}
+async function _renewPair(rt) {
+  const res = await fetch(`${SERVER}/graphql`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: `mutation { renewToken(appToken: "${rt}") { tokens { accessToken { token expiresAt } refreshToken { token expiresAt } } } }` }),
+  });
+  const json = await res.json();
+  return json?.data?.renewToken?.tokens ?? null;
+}
+function _savePair(tokens) {
+  try {
+    const key = 'tokenPairState';
+    const src = localStorage.getItem(key) ? localStorage : sessionStorage;
+    const existing = JSON.parse(src.getItem(key) || '{}');
+    src.setItem(key, JSON.stringify({ ...existing, accessOrWorkspaceAgnosticToken: tokens.accessToken, refreshToken: tokens.refreshToken }));
+  } catch {}
+}
+async function initToken() {
+  const pair = _getRawPair();
+  if (!pair?.accessOrWorkspaceAgnosticToken?.token) { window.location.href = '/welcome'; return; }
+  if (_jwtExpired(pair.accessOrWorkspaceAgnosticToken.token)) {
+    const rt = pair.refreshToken?.token;
+    if (!rt) { window.location.href = '/welcome'; return; }
+    try {
+      const tokens = await _renewPair(rt);
+      if (!tokens) throw new Error();
+      _savePair(tokens);
+      _token = tokens.accessToken.token;
+    } catch { window.location.href = '/welcome'; }
+  } else {
+    _token = pair.accessOrWorkspaceAgnosticToken.token;
+  }
+}
+
+function escHtml(str) { return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escNl(str) { return escHtml(str||'').replace(/\n/g,'<br>'); }
+
+function statusBadge(status) {
+  const map = {
+    DRAFT: 'bg-surface-container text-on-surface-variant border border-outline-variant',
+    PENDING_APPROVAL: 'bg-amber-50 text-amber-700 border border-amber-200',
+    APPROVED: 'bg-green-50 text-green-700 border border-green-200',
+    REJECTED: 'bg-red-50 text-red-700 border border-red-200',
+  };
+  const icons = { DRAFT: 'edit_note', PENDING_APPROVAL: 'hourglass_top', APPROVED: 'verified', REJECTED: 'cancel' };
+  const labels = { DRAFT: 'Draft', PENDING_APPROVAL: 'Pending Approval', APPROVED: 'Approved', REJECTED: 'Rejected' };
+  const s = status || 'DRAFT';
+  return `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium ${map[s]||map.DRAFT}">
+    <span class="material-symbols-outlined text-base">${icons[s]||'edit_note'}</span>
+    ${labels[s]||s}
+  </span>`;
+}
+
+async function loadPermissions() {
+  const token = getToken();
+  if (!token) { location.href = '/welcome'; return; }
+  try {
+    const res = await fetch(`${SERVER}/rest/decision-register/me/permissions`, { headers: { Authorization: `Bearer ${token}` } });
+    me = await res.json();
+    document.getElementById('userProfile').classList.remove('hidden');
+    document.getElementById('userAvatar').textContent = (me.userName||me.userEmail||'?')[0].toUpperCase();
+    document.getElementById('userName').textContent = me.userName || me.userEmail;
+    document.getElementById('userRole').textContent = me.role;
+    if (me.canApprove) document.getElementById('approverBadge').classList.remove('hidden');
+  } catch { me = { canApprove: false }; }
+}
+
+async function load() {
+  if (!id) { location.href = 'list.html'; return; }
+  const token = getToken();
+  const res = await fetch(`${SERVER}/rest/decision-register/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+  if (!res.ok) { location.href = 'list.html'; return; }
+  const d = await res.json();
+  render(d);
+}
+
+function render(d) {
+  document.title = d.title + ' — Decision Register';
+
+  const isDesignatedApprover = me?.userId && (d.requestedApproverIds || []).includes(me.userId);
+  const canApprove = me?.canApprove || isDesignatedApprover;
+  const isPending = d.status === 'PENDING_APPROVAL';
+  const canEdit = d.status !== 'APPROVED';
+
+  // Header actions
+  let actions = '';
+  if (canApprove && isPending) {
+    actions += `
+      <button onclick="approveDecision()" class="flex items-center gap-2 px-5 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-all font-medium text-sm shadow-sm">
+        <span class="material-symbols-outlined text-xl">check_circle</span>Approve
+      </button>
+      <button onclick="rejectDecision()" class="flex items-center gap-2 px-5 py-2 rounded-lg bg-red-50 text-red-700 hover:bg-red-100 transition-all font-medium text-sm border border-red-200">
+        <span class="material-symbols-outlined text-xl">cancel</span>Reject
+      </button>`;
+  }
+  if (canEdit) {
+    actions += `<a href="edit.html?id=${id}" class="flex items-center gap-2 px-5 py-2 rounded-lg bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest transition-all font-medium text-sm">
+      <span class="material-symbols-outlined text-xl">edit</span>Edit
+    </a>`;
+  }
+  actions += `<button onclick="deleteDecision()" class="flex items-center gap-2 px-5 py-2 rounded-lg text-error hover:bg-error-container/10 transition-all font-medium text-sm">
+    <span class="material-symbols-outlined text-xl">delete</span>Delete
+  </button>`;
+  document.getElementById('headerActions').innerHTML = actions;
+
+  const categoryChip = d.category ? `<span class="px-4 py-1 bg-primary-container text-on-primary-container text-xs font-medium rounded-full tracking-wider uppercase">${escHtml(d.category)}</span>` : '';
+
+  const optionsHtml = d.options && d.options.length > 0 ? `
+    <section class="space-y-3">
+      <h2 class="font-semibold text-lg text-on-surface ml-1">Key Metrics</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        ${d.options.map((opt, i) => `
+          <div class="bg-surface-container-lowest p-6 rounded-xl border-l-4 border-outline-variant hover:shadow-md transition-shadow">
+            <div class="text-xs font-medium text-on-surface-variant uppercase tracking-wider mb-3">Metric ${String.fromCharCode(65+i)}</div>
+            <p class="text-sm text-on-surface">${escHtml(opt.optionText)}</p>
+          </div>
+        `).join('')}
+      </div>
+    </section>
+  ` : '';
+
+  const outcomeHtml = d.outcome ? `
+    <section class="bg-surface-container p-8 rounded-xl">
+      <h2 class="font-semibold text-lg text-on-surface mb-4">Expected Outcome</h2>
+      <div class="p-4 bg-surface-container-low rounded-lg">
+        <p class="text-sm text-on-surface">${escNl(d.outcome)}</p>
+      </div>
+    </section>
+  ` : '';
+
+  const tagsHtml = d.tags && d.tags.length > 0 ? `
+    <section class="bg-surface-container-lowest p-6 rounded-xl shadow-sm">
+      <h3 class="text-xs font-medium text-on-surface-variant uppercase tracking-widest mb-3">Classifications</h3>
+      <div class="flex flex-wrap gap-2">
+        ${d.tags.map(t => `<span class="px-3 py-1.5 bg-surface-container text-on-surface font-medium text-xs rounded-lg">#${escHtml(t)}</span>`).join('')}
+      </div>
+    </section>
+  ` : '';
+
+  // Approval banner
+  let approvalBanner = '';
+  if (d.status === 'PENDING_APPROVAL' && canApprove) {
+    approvalBanner = `
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center gap-4">
+        <span class="material-symbols-outlined text-amber-600 text-2xl">hourglass_top</span>
+        <div class="flex-1">
+          <p class="font-medium text-amber-800 text-sm">This decision is awaiting your approval.</p>
+          <p class="text-xs text-amber-700 mt-0.5">As ${escHtml(me?.role||'Approver')}, you can approve or reject it.</p>
+        </div>
+        <button onclick="approveDecision()" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">Approve</button>
+        <button onclick="rejectDecision()" class="px-4 py-2 bg-white border border-red-300 text-red-700 rounded-lg text-sm font-medium hover:bg-red-50 transition-colors">Reject</button>
+      </div>`;
+  } else if (d.status === 'PENDING_APPROVAL' && !canApprove) {
+    approvalBanner = `
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center gap-3">
+        <span class="material-symbols-outlined text-amber-600">hourglass_top</span>
+        <p class="text-sm text-amber-800">This decision has been submitted and is awaiting approval from an admin.</p>
+      </div>`;
+  } else if (d.status === 'APPROVED') {
+    approvalBanner = `
+      <div class="bg-green-50 border border-green-200 rounded-xl p-4 flex items-center gap-3">
+        <span class="material-symbols-outlined text-green-600">verified</span>
+        <p class="text-sm text-green-800 font-medium">This decision has been approved${d.approvedAt ? ' on ' + new Date(d.approvedAt).toLocaleDateString() : ''}.</p>
+      </div>`;
+  } else if (d.status === 'REJECTED') {
+    approvalBanner = `
+      <div class="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center gap-3">
+        <span class="material-symbols-outlined text-red-600">cancel</span>
+        <p class="text-sm text-red-800 font-medium">This decision was rejected${d.approvedAt ? ' on ' + new Date(d.approvedAt).toLocaleDateString() : ''}.</p>
+      </div>`;
+  }
+
+  document.getElementById('content').innerHTML = `
+    ${approvalBanner}
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div class="flex flex-col gap-2">
+        <div class="flex items-center gap-3 flex-wrap">
+          ${categoryChip}
+          ${statusBadge(d.status)}
+        </div>
+        <h1 class="text-4xl font-bold text-on-surface tracking-tight mt-1">${escHtml(d.title)}</h1>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-12 gap-5">
+      <div class="col-span-12 lg:col-span-8 space-y-5">
+        <section class="bg-surface-container-lowest p-8 rounded-xl shadow-sm">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="p-2 bg-secondary-container text-on-secondary-container rounded-lg">
+              <span class="material-symbols-outlined">info</span>
+            </div>
+            <h2 class="font-semibold text-lg text-on-surface">Context & Rationale</h2>
+          </div>
+          <p class="text-on-surface-variant text-base leading-relaxed">${escNl(d.context)}</p>
+        </section>
+
+        <section class="bg-primary text-on-primary p-8 rounded-xl shadow-md relative overflow-hidden">
+          <div class="relative z-10">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="p-2 bg-on-primary/10 rounded-lg">
+                <span class="material-symbols-outlined text-on-primary">gavel</span>
+              </div>
+              <h2 class="font-semibold text-lg">Final Decision</h2>
+            </div>
+            <p class="text-2xl font-semibold leading-tight">${escHtml(d.decisionSummary)}</p>
+          </div>
+          <div class="absolute -right-16 -top-16 w-64 h-64 bg-on-primary/5 rounded-full blur-3xl"></div>
+        </section>
+
+        ${optionsHtml}
+      </div>
+
+      <div class="col-span-12 lg:col-span-4 space-y-5">
+        ${outcomeHtml}
+        ${tagsHtml}
+      </div>
+    </div>
+
+    ${d.attachments && d.attachments.length > 0 ? `
+    <section class="bg-surface-container-lowest p-6 rounded-xl shadow-sm">
+      <h3 class="text-sm font-semibold text-on-surface mb-4 flex items-center gap-2">
+        <span class="material-symbols-outlined text-base">attach_file</span>Attachments (${d.attachments.length})
+      </h3>
+      <div class="space-y-2">
+        ${d.attachments.map(a => `
+          <div class="flex items-center gap-3 p-3 bg-surface-container rounded-lg border border-outline-variant group">
+            <span class="material-symbols-outlined text-outline text-lg">description</span>
+            <span class="text-sm text-on-surface flex-1 truncate">${escHtml(a.fileName)}</span>
+            <span class="text-xs text-on-surface-variant">${(a.fileSize/1024).toFixed(0)} KB</span>
+            <a href="${SERVER}/rest/decision-register/attachments/${a.id}/download" target="_blank"
+               class="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded text-primary hover:bg-primary/10" title="Download">
+              <span class="material-symbols-outlined text-base">download</span>
+            </a>
+          </div>`).join('')}
+      </div>
+    </section>` : ''}
+
+    <div class="mt-8 pt-6 border-t border-outline-variant flex flex-col md:flex-row justify-between gap-4">
+      <div class="flex flex-wrap items-center gap-8">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-semibold">${(d.createdByName||'?')[0].toUpperCase()}</div>
+          <div>
+            <span class="text-xs font-medium text-on-surface-variant uppercase opacity-60 block">Created By</span>
+            <span class="text-sm text-on-surface font-medium">${escHtml(d.createdByName||'—')}</span>
+          </div>
+        </div>
+        <div><span class="text-xs font-medium text-on-surface-variant uppercase opacity-60 block">Created</span>
+          <span class="text-sm text-on-surface-variant">${new Date(d.createdAt).toLocaleString()}</span></div>
+        <div><span class="text-xs font-medium text-on-surface-variant uppercase opacity-60 block">Updated</span>
+          <span class="text-sm text-on-surface-variant">${new Date(d.updatedAt).toLocaleString()}</span></div>
+        ${d.requestedApproverNames && d.requestedApproverNames.length > 0 ? `
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-sm text-amber-500">approval</span>
+          <div>
+            <span class="text-xs font-medium text-on-surface-variant uppercase opacity-60 block">Approval Requested From</span>
+            <div class="flex flex-wrap gap-1 mt-0.5">
+              ${d.requestedApproverNames.map(n => `<span class="text-sm text-on-surface font-medium bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">${escHtml(n)}</span>`).join('')}
+            </div>
+          </div>
+        </div>` : ''}
+      </div>
+    </div>
+
+    <div id="discussion" class="mt-2"></div>
+  `;
+
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('content').classList.remove('hidden');
+  document.querySelectorAll('section').forEach((el, i) => {
+    el.style.opacity='0'; el.style.transform='translateY(10px)';
+    setTimeout(() => { el.style.transition='all 0.5s ease'; el.style.opacity='1'; el.style.transform='translateY(0)'; }, 80*i);
+  });
+}
+
+async function approveDecision() {
+  const token = getToken();
+  const res = await fetch(`${SERVER}/rest/decision-register/${id}/approve`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } });
+  if (res.ok) { const d = await res.json(); render(d); } else { alert('Failed to approve.'); }
+}
+
+async function rejectDecision() {
+  if (!confirm('Reject this decision? The submitter will need to revise it.')) return;
+  const token = getToken();
+  const res = await fetch(`${SERVER}/rest/decision-register/${id}/reject`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } });
+  if (res.ok) { const d = await res.json(); render(d); } else { alert('Failed to reject.'); }
+}
+
+async function deleteDecision() {
+  if (!confirm('Delete this decision? This cannot be undone.')) return;
+  const token = getToken();
+  await fetch(`${SERVER}/rest/decision-register/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+  location.href = 'list.html';
+}
+
+// ─── Discussion thread ───────────────────────────────────────────────────────
+
+const AVATAR_COLORS = ['#4f6ef7','#e05c97','#f59e0b','#10b981','#8b5cf6','#ef4444','#06b6d4','#84cc16','#f97316','#ec4899'];
+function avatarColor(name) {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = name.charCodeAt(i) + ((h << 5) - h);
+  return AVATAR_COLORS[Math.abs(h) % AVATAR_COLORS.length];
+}
+function relTime(iso) {
+  const s = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s/60) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  if (s < 604800) return Math.floor(s/86400) + 'd ago';
+  return new Date(iso).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+}
+
+async function loadComments() {
+  const token = getToken();
+  try {
+    const res = await fetch(`${SERVER}/rest/decision-register/${id}/comments`, { headers: { Authorization: `Bearer ${token}` } });
+    if (!res.ok) throw new Error();
+    const comments = await res.json();
+    try { localStorage.setItem(`dr-read-${id}`, new Date().toISOString()); } catch {}
+    renderDiscussion(comments);
+  } catch {
+    renderDiscussion([]);
+  }
+}
+
+function renderDiscussion(comments) {
+  const total = comments.reduce((n, c) => n + 1 + (c.replies||[]).length, 0);
+  const el = document.getElementById('discussion');
+  if (!el) return;
+  el.innerHTML = `
+    <div class="border border-outline-variant rounded-xl overflow-hidden">
+      <div class="flex items-center justify-between px-5 py-3 bg-surface-container-low border-b border-outline-variant">
+        <span class="text-xs font-semibold uppercase tracking-widest text-on-surface-variant">Discussion</span>
+        <span class="text-xs font-medium bg-surface-container text-on-surface-variant px-3 py-0.5 rounded-full">${total}</span>
+      </div>
+      <div class="px-5 py-4 border-b border-outline-variant">
+        ${composerHtml('top-composer', 'Share your thoughts on this decision…', false)}
+      </div>
+      <div id="comment-list">
+        ${comments.length === 0
+          ? '<p class="text-center text-on-surface-variant text-sm py-10">No comments yet. Be the first to share your thoughts.</p>'
+          : comments.map(c => commentHtml(c, 0)).join('')}
+      </div>
+    </div>`;
+  bindDiscussionEvents(el);
+}
+
+function composerHtml(id, placeholder, isReply) {
+  return `
+    <div class="flex flex-col gap-2">
+      <textarea id="${id}-text" placeholder="${escHtml(placeholder)}"
+        class="w-full text-sm text-on-surface bg-surface border border-outline-variant rounded-lg px-3 py-2 resize-none outline-none focus:border-primary transition-colors"
+        rows="${isReply ? 2 : 3}"></textarea>
+      <div class="flex justify-end gap-2">
+        ${isReply ? `<button data-cancel="${id}" class="text-xs px-3 py-1 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors">Cancel</button>` : ''}
+        <button data-submit="${id}" class="text-xs px-3 py-1.5 rounded-lg bg-primary text-on-primary font-semibold hover:opacity-90 transition-opacity disabled:opacity-40">
+          ${isReply ? 'Reply' : 'Post'}
+        </button>
+      </div>
+    </div>`;
+}
+
+function commentHtml(c, depth) {
+  const color = avatarColor(c.authorName||'?');
+  const initials = c.authorInitials || (c.authorName||'?')[0].toUpperCase();
+  const isOwn = me && c.authorId === me.userId;
+  const canDel = isOwn || (me && me.canApprove);
+  const replies = (c.replies||[]);
+  return `
+    <div class="px-5 py-4 border-b border-outline-variant last:border-b-0 ${depth > 0 ? 'pl-12 bg-surface-container/30' : ''}">
+      <div class="flex gap-3">
+        <div class="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-semibold" style="background:${color}22;color:${color}">${escHtml(initials)}</div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-sm font-medium text-on-surface">${escHtml(c.authorName||'Unknown')}</span>
+            <span class="text-xs text-on-surface-variant">${relTime(c.createdAt)}</span>
+          </div>
+          <p class="text-sm text-on-surface leading-relaxed whitespace-pre-wrap break-words">${escHtml(c.body)}</p>
+          <div class="flex gap-4 mt-2">
+            ${depth === 0 ? `<button data-reply="${c.id}" class="text-xs text-on-surface-variant hover:text-primary hover:underline transition-colors font-medium">Reply</button>` : ''}
+            ${canDel ? `<button data-delete="${c.id}" class="text-xs text-red-500 hover:text-red-700 hover:underline transition-colors font-medium">Delete</button>` : ''}
+          </div>
+          <div id="reply-composer-${c.id}" class="hidden mt-3">
+            ${composerHtml(`reply-${c.id}`, `Reply to ${escHtml(c.authorName||'this comment')}…`, true)}
+          </div>
+        </div>
+      </div>
+    </div>
+    ${replies.length > 0 ? `<div class="border-l-2 border-outline-variant ml-9">${replies.map(r => commentHtml(r, depth+1)).join('')}</div>` : ''}`;
+}
+
+function bindDiscussionEvents(root) {
+  const token = getToken();
+
+  // top-level post
+  root.querySelector('[data-submit="top-composer"]')?.addEventListener('click', async () => {
+    const ta = root.querySelector('#top-composer-text');
+    const body = ta.value.trim();
+    if (!body) return;
+    await fetch(`${SERVER}/rest/decision-register/${id}/comments`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ body }),
+    });
+    loadComments();
+  });
+
+  // reply toggles
+  root.querySelectorAll('[data-reply]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cid = btn.dataset.reply;
+      const box = root.querySelector(`#reply-composer-${cid}`);
+      if (!box) return;
+      const isHidden = box.classList.contains('hidden');
+      root.querySelectorAll('[id^="reply-composer-"]').forEach(b => b.classList.add('hidden'));
+      if (isHidden) { box.classList.remove('hidden'); box.querySelector('textarea')?.focus(); }
+    });
+  });
+
+  // reply cancel
+  root.querySelectorAll('[data-cancel]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.cancel.replace('reply-','');
+      root.querySelector(`#reply-composer-${id}`)?.classList.add('hidden');
+    });
+  });
+
+  // reply submit
+  root.querySelectorAll('[data-submit^="reply-"]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const cid = btn.dataset.submit.replace('reply-','');
+      const ta = root.querySelector(`#reply-${cid}-text`);
+      const body = ta.value.trim();
+      if (!body) return;
+      await fetch(`${SERVER}/rest/decision-register/${id}/comments`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ body, parentId: cid }),
+      });
+      loadComments();
+    });
+  });
+
+  // delete
+  root.querySelectorAll('[data-delete]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (!confirm('Delete this comment?')) return;
+      const cid = btn.dataset.delete;
+      await fetch(`${SERVER}/rest/decision-register/comments/${cid}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      loadComments();
+    });
+  });
+}
+
+(async () => {
+  await initToken();
+  await loadPermissions();
+  await load();
+  await loadComments();
+})();
+</script>
+</body></html>

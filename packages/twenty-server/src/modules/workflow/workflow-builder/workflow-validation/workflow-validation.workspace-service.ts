@@ -200,10 +200,10 @@ export class WorkflowValidationWorkspaceService {
         return step;
       }
 
-      return {
+      return ({
         ...step,
         settings: { ...step.settings, outputSchema: computedSchema },
-      };
+      } as unknown) as TStep;
     } catch {
       // Output schema enrichment is best-effort: if it cannot be computed,
       // validation still runs against the step's existing settings rather

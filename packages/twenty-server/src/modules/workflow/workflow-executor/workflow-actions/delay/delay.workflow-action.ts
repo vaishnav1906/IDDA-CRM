@@ -18,12 +18,14 @@ import { RESUME_DELAYED_WORKFLOW_JOB_NAME } from 'src/modules/workflow/workflow-
 import { isWorkflowDelayAction } from 'src/modules/workflow/workflow-executor/workflow-actions/delay/guards/is-workflow-delay-action.guard';
 import { ResumeDelayedWorkflowJobData } from 'src/modules/workflow/workflow-executor/workflow-actions/delay/types/resume-delayed-workflow-job-data.type';
 import { WorkflowDelayActionInput } from 'src/modules/workflow/workflow-executor/workflow-actions/delay/types/workflow-delay-action-input.type';
+import { WaitStateEngineService } from 'src/modules/idda-wait-state/services/wait-state-engine.service';
 
 @Injectable()
 export class DelayWorkflowAction implements WorkflowAction {
   constructor(
     @InjectMessageQueue(MessageQueue.delayedJobsQueue)
     private readonly messageQueueService: MessageQueueService,
+    private readonly waitStateEngineService: WaitStateEngineService,
   ) {}
 
   async execute({
@@ -48,6 +50,27 @@ export class DelayWorkflowAction implements WorkflowAction {
       step.settings.input,
       context,
     ) as WorkflowDelayActionInput;
+
+    if (workflowActionInput.delayType === 'BUSINESS_DAYS') {
+      if (
+        workflowActionInput.businessDays == null ||
+        workflowActionInput.businessDays < 0
+      ) {
+        throw new WorkflowStepExecutorException(
+          'businessDays must be a non-negative number for BUSINESS_DAYS delay',
+          WorkflowStepExecutorExceptionCode.INVALID_STEP_INPUT,
+        );
+      }
+
+      await this.waitStateEngineService.schedule({
+        workspaceId: runInfo.workspaceId,
+        workflowRunId: runInfo.workflowRunId,
+        stepId: currentStepId,
+        input: workflowActionInput,
+      });
+
+      return { pendingEvent: true };
+    }
 
     let delayInMs: number;
 

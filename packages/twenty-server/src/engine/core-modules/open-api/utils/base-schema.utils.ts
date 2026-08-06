@@ -11,7 +11,7 @@ export const baseSchema = (
   return {
     openapi: '3.1.1',
     info: {
-      title: 'Twenty Api',
+      title: 'IDDA CRM Api',
       description: `Use this page to explore and call the **REST API**.
 
 ## Authentication
@@ -105,7 +105,7 @@ order_by=id[AscNullsFirst],createdAt[DescNullsLast]
 ## Usage with LLMs
 
 The recommended way to give an LLM agent (Claude Desktop, Cursor, Windsurf, …)
-access to your workspace is the **Twenty MCP server**, not this OpenAPI schema.
+access to your workspace is the **IDDA CRM MCP server**, not this OpenAPI schema.
 The MCP server exposes typed tools the agent can call directly with proper
 header-based auth (OAuth or API key), no tokens in URLs.
 
@@ -124,14 +124,12 @@ curl -H 'Authorization: Bearer <token>' \\
   ${serverUrl}/rest/open-api/${schemaName} > twenty-${schemaName}.json
 \`\`\`
 `,
-      termsOfService:
-        'https://github.com/twentyhq/twenty?tab=coc-ov-file#readme',
       contact: {
-        email: 'felix@twenty.com',
+        email: 'support@idda-crm.com',
       },
       license: {
         name: 'AGPL-3.0',
-        url: 'https://github.com/twentyhq/twenty?tab=License-1-ov-file#readme',
+        url: 'https://www.gnu.org/licenses/agpl-3.0.html',
       },
       version: API_Version,
     },
@@ -159,8 +157,8 @@ curl -H 'Authorization: Bearer <token>' \\
       },
     ],
     externalDocs: {
-      description: 'Find out more about **Twenty**',
-      url: 'https://twenty.com',
+      description: 'Find out more about **IDDA CRM**',
+      url: 'https://idda-crm.com',
     },
     paths: { [`/open-api/${schemaName}`]: computeOpenApiPath(serverUrl) },
   };

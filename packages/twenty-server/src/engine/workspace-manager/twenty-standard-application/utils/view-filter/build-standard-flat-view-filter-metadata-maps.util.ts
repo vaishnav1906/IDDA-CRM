@@ -4,6 +4,8 @@ import { addFlatEntityToFlatEntityMapsOrThrow } from 'src/engine/metadata-module
 import { type FlatViewFilter } from 'src/engine/metadata-modules/flat-view-filter/types/flat-view-filter.type';
 import { type AllStandardObjectName } from 'src/engine/workspace-manager/twenty-standard-application/types/all-standard-object-name.type';
 import { computeStandardTaskViewFilters } from 'src/engine/workspace-manager/twenty-standard-application/utils/view-filter/compute-standard-task-view-filters.util';
+import { computeStandardPersonViewFilters } from 'src/engine/workspace-manager/twenty-standard-application/utils/view-filter/compute-standard-person-view-filters.util';
+import { computeStandardLeadViewFilters } from 'src/engine/workspace-manager/twenty-standard-application/utils/view-filter/compute-standard-lead-view-filters.util';
 import { type CreateStandardViewFilterArgs } from 'src/engine/workspace-manager/twenty-standard-application/utils/view-filter/create-standard-view-filter-flat-metadata.util';
 
 type StandardViewFilterBuilder<P extends AllStandardObjectName> = (
@@ -12,6 +14,8 @@ type StandardViewFilterBuilder<P extends AllStandardObjectName> = (
 
 const STANDARD_FLAT_VIEW_FILTER_METADATA_BUILDERS_BY_OBJECT_NAME = {
   task: computeStandardTaskViewFilters,
+  person: computeStandardPersonViewFilters,
+  lead: computeStandardLeadViewFilters,
 } as const satisfies {
   [P in AllStandardObjectName]?: StandardViewFilterBuilder<P>;
 };

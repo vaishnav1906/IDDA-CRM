@@ -30,7 +30,8 @@ const StyledDivider = styled.div`
 
 const StyledTwentyLogo = styled.img`
   height: ${SYNC_BADGE_LOGO_SIZE}px;
-  width: ${SYNC_BADGE_LOGO_SIZE}px;
+  object-fit: contain;
+  width: 48px;
 `;
 
 export const OnboardingImportPreviewSyncBadge = () => {
@@ -45,7 +46,7 @@ export const OnboardingImportPreviewSyncBadge = () => {
         size={theme.icon.size.md}
         color={themeCssVariables.font.color.tertiary}
       />
-      <StyledTwentyLogo src="/images/integrations/twenty-logo.svg" alt="" />
+      <StyledTwentyLogo src="/images/integrations/idda-crm-logo.png" alt="IDDA CRM" />
     </StyledBadge>
   );
 };

@@ -12,6 +12,7 @@ import { computeStandardCallRecordingViews } from 'src/engine/workspace-manager/
 import { computeStandardCompanyViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-company-views.util';
 import { computeStandardDashboardViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-dashboard-views.util';
 import { computeStandardLeadViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-lead-views.util';
+import { computeStandardCandidateViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-candidate-views.util';
 import { computeStandardSubscriptionViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-subscription-views.util';
 import { computeStandardMessageChannelMessageAssociationMessageFolderViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-message-channel-message-association-message-folder-views.util';
 import { computeStandardMessageChannelMessageAssociationViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-message-channel-message-association-views.util';
@@ -30,6 +31,8 @@ import { computeStandardWorkflowRunViews } from 'src/engine/workspace-manager/tw
 import { computeStandardWorkflowVersionViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-workflow-version-views.util';
 import { computeStandardWorkflowViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-workflow-views.util';
 import { computeStandardWorkspaceMemberViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-workspace-member-views.util';
+import { computeStandardTeamMemberViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-team-member-views.util';
+import { computeStandardVisitViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-visit-views.util';
 import { type CreateStandardViewArgs } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/create-standard-view-flat-metadata.util';
 
 type StandardViewBuilder<P extends AllStandardObjectName> = (
@@ -47,6 +50,7 @@ const STANDARD_FLAT_VIEW_METADATA_BUILDERS_BY_OBJECT_NAME = {
   company: computeStandardCompanyViews,
   dashboard: computeStandardDashboardViews,
   lead: computeStandardLeadViews,
+  candidate: computeStandardCandidateViews,
   message: computeStandardMessageViews,
   messageChannelMessageAssociation:
     computeStandardMessageChannelMessageAssociationViews,
@@ -67,6 +71,8 @@ const STANDARD_FLAT_VIEW_METADATA_BUILDERS_BY_OBJECT_NAME = {
   workflowVersion: computeStandardWorkflowVersionViews,
   workspaceMember: computeStandardWorkspaceMemberViews,
   subscription: computeStandardSubscriptionViews,
+  teamMember: computeStandardTeamMemberViews,
+  visit: computeStandardVisitViews,
 } as const satisfies {
   [P in AllStandardObjectName]?: StandardViewBuilder<P>;
 };

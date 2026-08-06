@@ -21,6 +21,17 @@ import { MailSenderActionModule } from 'src/modules/workflow/workflow-executor/w
 import { RecordCRUDActionModule } from 'src/modules/workflow/workflow-executor/workflow-actions/record-crud/record-crud-action.module';
 import { WorkflowExecutorWorkspaceService } from 'src/modules/workflow/workflow-executor/workspace-services/workflow-executor.workspace-service';
 import { WorkflowRunModule } from 'src/modules/workflow/workflow-runner/workflow-run/workflow-run.module';
+import { NotifyActionModule } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-notify/notify-action.module';
+import { AssignLeadActionModule } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-assign-lead/assign-lead-action.module';
+import { UpdateSlaActionModule } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-update-sla/update-sla-action.module';
+import { SubscriptionTaskActionModule } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-subscription-task/subscription-task-action.module';
+import { CheckLeadNextStepActionModule } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-lead-next-step/check-lead-next-step-action.module';
+import { CheckFirstContactSlaActionModule } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-first-contact-sla/check-first-contact-sla-action.module';
+import { CheckMissedFollowupsActionModule } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-missed-followups/check-missed-followups-action.module';
+import { HandleOppWonActionModule } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-handle-opp-won/handle-opp-won-action.module';
+import { SendTaskEmailActionModule } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-send-task-email/send-task-email-action.module';
+import { CheckCandidateFollowupsActionModule } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-candidate-followups/check-candidate-followups-action.module';
+import { CheckStaleLeadsActionModule } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-stale-leads/check-stale-leads-action.module';
 
 @Module({
   imports: [
@@ -43,6 +54,17 @@ import { WorkflowRunModule } from 'src/modules/workflow/workflow-runner/workflow
     MailSenderActionModule,
     CreateCalendarEventActionModule,
     MetricsModule,
+    NotifyActionModule,
+    AssignLeadActionModule,
+    UpdateSlaActionModule,
+    SubscriptionTaskActionModule,
+    CheckLeadNextStepActionModule,
+    CheckFirstContactSlaActionModule,
+    CheckMissedFollowupsActionModule,
+    HandleOppWonActionModule,
+    SendTaskEmailActionModule,
+    CheckCandidateFollowupsActionModule,
+    CheckStaleLeadsActionModule,
   ],
   providers: [WorkflowExecutorWorkspaceService, WorkflowActionFactory],
   exports: [WorkflowExecutorWorkspaceService],

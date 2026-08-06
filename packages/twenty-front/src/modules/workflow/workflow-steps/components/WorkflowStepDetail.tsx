@@ -26,6 +26,11 @@ import { WorkflowEditTriggerDatabaseEventForm } from '@/workflow/workflow-trigge
 import { WorkflowEditTriggerManual } from '@/workflow/workflow-trigger/components/WorkflowEditTriggerManual';
 import { WorkflowEditTriggerWebhookForm } from '@/workflow/workflow-trigger/components/WorkflowEditTriggerWebhookForm';
 import { assertUnreachable, isDefined } from 'twenty-shared/utils';
+import { WorkflowEditActionIddaNotify } from '@/workflow/workflow-steps/workflow-actions/idda-actions/components/WorkflowEditActionIddaNotify';
+import { WorkflowEditActionIddaAssignLead } from '@/workflow/workflow-steps/workflow-actions/idda-actions/components/WorkflowEditActionIddaAssignLead';
+import { WorkflowEditActionIddaUpdateSla } from '@/workflow/workflow-steps/workflow-actions/idda-actions/components/WorkflowEditActionIddaUpdateSla';
+import { WorkflowEditActionIddaCreateSubscriptionTask } from '@/workflow/workflow-steps/workflow-actions/idda-actions/components/WorkflowEditActionIddaCreateSubscriptionTask';
+import { WorkflowEditActionIddaSendTaskEmail } from '@/workflow/workflow-steps/workflow-actions/idda-actions/components/WorkflowEditActionIddaSendTaskEmail';
 
 type WorkflowStepDetailProps = {
   stepId: string;
@@ -272,6 +277,63 @@ export const WorkflowStepDetail = ({
               action={stepDefinition.definition}
               actionOptions={props}
             />
+          );
+        }
+        case 'IDDA_NOTIFY': {
+          return (
+            <WorkflowEditActionIddaNotify
+              key={stepId}
+              action={stepDefinition.definition}
+              actionOptions={props}
+            />
+          );
+        }
+        case 'IDDA_ASSIGN_LEAD': {
+          return (
+            <WorkflowEditActionIddaAssignLead
+              key={stepId}
+              action={stepDefinition.definition}
+              actionOptions={props}
+            />
+          );
+        }
+        case 'IDDA_UPDATE_SLA': {
+          return (
+            <WorkflowEditActionIddaUpdateSla
+              key={stepId}
+              action={stepDefinition.definition}
+              actionOptions={props}
+            />
+          );
+        }
+        case 'IDDA_CREATE_SUBSCRIPTION_TASK': {
+          return (
+            <WorkflowEditActionIddaCreateSubscriptionTask
+              key={stepId}
+              action={stepDefinition.definition}
+              actionOptions={props}
+            />
+          );
+        }
+        case 'IDDA_SEND_TASK_EMAIL': {
+          return (
+            <WorkflowEditActionIddaSendTaskEmail
+              key={stepId}
+              action={stepDefinition.definition}
+              actionOptions={props}
+            />
+          );
+        }
+        case 'IDDA_CHECK_LEAD_NEXT_STEP':
+        case 'IDDA_CHECK_FIRST_CONTACT_SLA':
+        case 'IDDA_CHECK_MISSED_FOLLOWUPS':
+        case 'IDDA_HANDLE_OPP_WON':
+        case 'IDDA_CHECK_CANDIDATE_FOLLOWUPS':
+        case 'IDDA_CHECK_STALE_LEADS': {
+          return (
+            <div key={stepId} style={{ padding: '16px', color: 'var(--twenty-font-color-secondary)' }}>
+              This action is configured automatically and runs server-side.
+            </div>
           );
         }
         default:

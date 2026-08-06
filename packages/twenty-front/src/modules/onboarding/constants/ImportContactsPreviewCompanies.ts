@@ -5,10 +5,10 @@ export type ImportContactsPreviewCompany = {
 };
 
 export const IMPORT_CONTACTS_PREVIEW_COMPANIES = [
-  { id: 'figma', name: 'Figma', domainName: 'figma.com' },
-  { id: 'anthropic', name: 'Anthropic', domainName: 'anthropic.com' },
-  { id: 'notion', name: 'Notion', domainName: 'notion.so' },
-  { id: 'airbnb', name: 'Airbnb', domainName: 'airbnb.com' },
-  { id: 'linkedin', name: 'LinkedIn', domainName: 'linkedin.com' },
-  { id: 'slack', name: 'Slack', domainName: 'slack.com' },
+  { id: 'apollo-hospitals', name: 'Apollo Hospitals', domainName: 'apollohospitals.com' },
+  { id: 'fortis', name: 'Fortis Healthcare', domainName: 'fortishealthcare.com' },
+  { id: 'max-healthcare', name: 'Max Healthcare', domainName: 'maxhealthcare.in' },
+  { id: 'medicover', name: 'Medicover Hospitals', domainName: 'medicoverhospitals.in' },
+  { id: 'narayana', name: 'Narayana Health', domainName: 'narayanahealth.org' },
+  { id: 'manipal', name: 'Manipal Hospitals', domainName: 'manipalhospitals.com' },
 ] satisfies ImportContactsPreviewCompany[];

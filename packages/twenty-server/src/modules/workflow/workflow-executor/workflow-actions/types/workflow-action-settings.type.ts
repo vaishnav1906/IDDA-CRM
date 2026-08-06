@@ -1,5 +1,15 @@
 import { type OutputSchema } from 'src/modules/workflow/workflow-builder/workflow-schema/types/output-schema.type';
 import { type WorkflowAiAgentActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/ai-agent/types/workflow-ai-agent-action-settings.type';
+import { type WorkflowNotifyActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-notify/types/workflow-notify-action-settings.type';
+import { type WorkflowAssignLeadActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-assign-lead/types/workflow-assign-lead-action-settings.type';
+import { type WorkflowUpdateSlaActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-update-sla/types/workflow-update-sla-action-settings.type';
+import { type WorkflowSubscriptionTaskActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-subscription-task/types/workflow-subscription-task-action-settings.type';
+import { type WorkflowCheckLeadNextStepActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-lead-next-step/types/workflow-check-lead-next-step-action-settings.type';
+import { type WorkflowCheckFirstContactSlaActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-first-contact-sla/types/workflow-check-first-contact-sla-action-settings.type';
+import { type WorkflowCheckMissedFollowupsActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-missed-followups/types/workflow-check-missed-followups-action-settings.type';
+import { type WorkflowHandleOppWonActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-handle-opp-won/types/workflow-handle-opp-won-action-settings.type';
+import { type WorkflowCheckCandidateFollowupsActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-candidate-followups/types/workflow-check-candidate-followups-action-settings.type';
+import { type WorkflowCheckStaleLeadsActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/idda-check-stale-leads/types/workflow-check-stale-leads-action-settings.type';
 import { type WorkflowCodeActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/code/types/workflow-code-action-settings.type';
 import { type WorkflowCreateCalendarEventActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/create-calendar-event/types/workflow-create-calendar-event-action-settings.type';
 import { type WorkflowDelayActionSettings } from 'src/modules/workflow/workflow-executor/workflow-actions/delay/types/workflow-delay-action-settings.type';
@@ -52,4 +62,14 @@ export type WorkflowActionSettings =
   | WorkflowHttpRequestActionSettings
   | WorkflowAiAgentActionSettings
   | WorkflowDelayActionSettings
-  | WorkflowIteratorActionSettings;
+  | WorkflowIteratorActionSettings
+  | WorkflowNotifyActionSettings
+  | WorkflowAssignLeadActionSettings
+  | WorkflowUpdateSlaActionSettings
+  | WorkflowSubscriptionTaskActionSettings
+  | WorkflowCheckLeadNextStepActionSettings
+  | WorkflowCheckFirstContactSlaActionSettings
+  | WorkflowCheckMissedFollowupsActionSettings
+  | WorkflowHandleOppWonActionSettings
+  | WorkflowCheckCandidateFollowupsActionSettings
+  | WorkflowCheckStaleLeadsActionSettings;

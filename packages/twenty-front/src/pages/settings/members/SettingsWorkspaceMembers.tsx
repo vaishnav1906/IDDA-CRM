@@ -1,7 +1,7 @@
 import { Trans, useLingui } from '@lingui/react/macro';
 import { SettingsPath } from 'twenty-shared/types';
 import { getSettingsPath } from 'twenty-shared/utils';
-import { IconLock, IconUserPlus, IconUsers } from 'twenty-ui/icon';
+import { IconLock, IconUserPlus, IconUsers, IconInbox } from 'twenty-ui/icon';
 
 import { SettingsDiscoveryHeroCard } from '@/settings/components/SettingsDiscoveryHeroCard';
 import { useHasPermissionFlag } from '@/settings/roles/hooks/useHasPermissionFlag';
@@ -14,6 +14,7 @@ import { PermissionFlagType } from '~/generated-metadata/graphql';
 import { SettingsWorkspaceMembersInviteTab } from '~/pages/settings/members/tabs/SettingsWorkspaceMembersInviteTab';
 import { SettingsWorkspaceMembersRolesTab } from '~/pages/settings/members/tabs/SettingsWorkspaceMembersRolesTab';
 import { SettingsWorkspaceMembersTeamTab } from '~/pages/settings/members/tabs/SettingsWorkspaceMembersTeamTab';
+import { WorkspaceJoinRequests } from '@/workspace-join-request/components/WorkspaceJoinRequests';
 import coverDark from '~/pages/settings/members/assets/cover-dark.png';
 import coverLight from '~/pages/settings/members/assets/cover-light.png';
 
@@ -22,6 +23,7 @@ const MEMBERS_TAB_LIST_ID = 'members-tab-list';
 const MEMBERS_TAB_TEAM_ID = 'team';
 const MEMBERS_TAB_INVITE_ID = 'invite';
 const MEMBERS_TAB_ROLES_ID = 'roles';
+const MEMBERS_TAB_JOIN_REQUESTS_ID = 'join-requests';
 
 const SETTINGS_MEMBERS_HERO_INSTANCE_ID_PREFIX = 'settings-members-hero';
 
@@ -36,6 +38,7 @@ export const SettingsWorkspaceMembers = () => {
     ...(hasRolesPermission
       ? [{ id: MEMBERS_TAB_ROLES_ID, title: t`Roles`, Icon: IconLock }]
       : []),
+    { id: MEMBERS_TAB_JOIN_REQUESTS_ID, title: t`Join Requests`, Icon: IconInbox },
   ];
 
   const activeTabId = useSettingsActiveTabId(
@@ -53,6 +56,8 @@ export const SettingsWorkspaceMembers = () => {
         ) : (
           <SettingsWorkspaceMembersTeamTab />
         );
+      case MEMBERS_TAB_JOIN_REQUESTS_ID:
+        return <WorkspaceJoinRequests />;
       default:
         return <SettingsWorkspaceMembersTeamTab />;
     }

@@ -932,7 +932,7 @@ export class WorkflowVersionStepOperationsWorkspaceService {
 
         await workflowVersionRepository.update(workflowVersion.id, {
           steps: [...existingSteps, emptyNodeStep],
-        });
+        } as any);
 
         return emptyNodeStep;
       },
@@ -1014,7 +1014,7 @@ export class WorkflowVersionStepOperationsWorkspaceService {
 
         await workflowVersionRepository.update(workflowVersion.id, {
           steps: [...existingSteps, ifEmptyNode, elseEmptyNode],
-        });
+        } as any);
 
         const ifFilterGroupId = v4();
 

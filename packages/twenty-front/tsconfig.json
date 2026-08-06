@@ -24,7 +24,7 @@
       "@/*": ["./src/modules/*"],
       "~/*": ["./src/*"]
     },
-    "types": ["node", "jest"],
+    "types": ["node", "jest", "google.maps"],
     "plugins": [
       {
         "name": "@styled/typescript-styled-plugin",

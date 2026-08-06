@@ -1,6 +1,7 @@
 export type WorkflowDelayActionInput =
   | WorkflowScheduledDateActionInput
-  | WorkflowDurationDelayActionInput;
+  | WorkflowDurationDelayActionInput
+  | WorkflowBusinessDaysDelayActionInput;
 
 export type WorkflowScheduledDateActionInput = {
   delayType: 'SCHEDULED_DATE';
@@ -15,4 +16,9 @@ export type WorkflowDurationDelayActionInput = {
     minutes?: number;
     seconds?: number;
   };
+};
+
+export type WorkflowBusinessDaysDelayActionInput = {
+  delayType: 'BUSINESS_DAYS';
+  businessDays: number;
 };

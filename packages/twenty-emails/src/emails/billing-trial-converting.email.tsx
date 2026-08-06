@@ -61,7 +61,7 @@ export const BillingTrialConvertingEmail = ({
         )}
         <br />
         <br />
-        <Trans id="If Twenty is working for you, you're all set — there's nothing to do. If it's not the right fit, you can cancel in one click before then and you won't be charged." />
+        <Trans id="If IDDA CRM is working for you, you're all set — there's nothing to do. If it's not the right fit, you can cancel in one click before then and you won't be charged." />
       </MainText>
       <br />
       <CallToAction

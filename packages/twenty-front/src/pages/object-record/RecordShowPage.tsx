@@ -16,6 +16,12 @@ import { PageCardLayout } from '@/ui/layout/page/components/PageCardLayout';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { RecordShowPageHeader } from '~/pages/object-record/RecordShowPageHeader';
 import { RecordShowPageTitle } from '~/pages/object-record/RecordShowPageTitle';
+import { VisitClinicPhotoViewer } from '@/visit-verification/components/VisitClinicPhotoViewer';
+import { VisitSelfiePhotoViewer } from '@/visit-verification/components/VisitSelfiePhotoViewer';
+import { VisitReviewButton } from '@/visit-verification/components/VisitReviewButton';
+import { VisitVerifyButtonContainer } from '@/visit-verification/components/VisitVerifyButtonContainer';
+import { LeadMapPickerButton } from '@/map-picker/components/LeadMapPickerButton';
+import { DecisionNativeThreadSection } from '@/decision-register/components/DecisionNativeThreadSection';
 
 export const RecordShowPage = () => {
   const isLayoutCustomizationModeEnabled = useAtomStateValue(
@@ -55,6 +61,19 @@ export const RecordShowPage = () => {
                 objectNameSingular={objectNameSingular}
                 objectRecordId={objectRecordId}
               >
+                {objectNameSingular === 'visit' && (
+                  <>
+                    <VisitClinicPhotoViewer objectRecordId={objectRecordId} />
+                    <VisitSelfiePhotoViewer objectRecordId={objectRecordId} />
+                    <VisitReviewButton objectRecordId={objectRecordId} />
+                    <VisitVerifyButtonContainer
+                      objectRecordId={objectRecordId}
+                    />
+                  </>
+                )}
+                {objectNameSingular === 'lead' && (
+                  <LeadMapPickerButton objectRecordId={objectRecordId} />
+                )}
                 <RecordShowCommandMenu />
                 {!isLayoutCustomizationModeEnabled && <SidePanelToggleButton />}
               </RecordShowPageHeader>
@@ -72,6 +91,9 @@ export const RecordShowPage = () => {
                 }}
                 isInSidePanel={false}
               />
+              {objectNameSingular === 'decisionRegister' && (
+                <DecisionNativeThreadSection decisionId={objectRecordId} />
+              )}
               <RecordShowPageSSESubscribeEffect
                 objectNameSingular={objectNameSingular}
                 recordId={objectRecordId}

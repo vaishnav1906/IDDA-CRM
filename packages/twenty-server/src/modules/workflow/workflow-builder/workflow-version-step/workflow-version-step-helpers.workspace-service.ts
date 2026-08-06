@@ -67,7 +67,7 @@ export class WorkflowVersionStepHelpersWorkspaceService {
         updateData.trigger = trigger;
       }
 
-      await workflowVersionRepository.update(workflowVersionId, updateData);
+      await workflowVersionRepository.update(workflowVersionId, updateData as any);
     }, authContext);
   }
 }

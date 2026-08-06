@@ -34,8 +34,9 @@ import { ModalContent } from 'twenty-ui/surfaces';
 import { useLingui } from '@lingui/react/macro';
 import { useSearchParams } from 'react-router-dom';
 import { isDefined } from 'twenty-shared/utils';
+import { SignInUpLeftPanel } from '@/auth/sign-in-up/components/SignInUpLeftPanel';
 import { Loader } from 'twenty-ui/feedback';
-import { themeCssVariables } from 'twenty-ui/theme-constants';
+import { MOBILE_VIEWPORT, themeCssVariables } from 'twenty-ui/theme-constants';
 
 const StyledLoaderContainer = styled.div`
   align-items: center;
@@ -46,12 +47,41 @@ const StyledLoaderContainer = styled.div`
   width: 100%;
 `;
 
-const StyledBackground = styled.div`
-  background: ${themeCssVariables.background.secondary};
+const StyledSplitLayout = styled.div`
   display: flex;
-  flex-direction: column;
   height: 100dvh;
   width: 100%;
+`;
+
+const StyledRightPanel = styled.div`
+  background: ${themeCssVariables.background.primary};
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow-y: auto;
+
+  @media (max-width: ${MOBILE_VIEWPORT}px) {
+    width: 100%;
+  }
+`;
+
+const StyledMobileHeader = styled.div`
+  align-items: center;
+  background: ${themeCssVariables.background.primary};
+  border-bottom: 1px solid ${themeCssVariables.border.color.light};
+  display: none;
+  justify-content: center;
+  padding: 16px;
+
+  @media (max-width: ${MOBILE_VIEWPORT}px) {
+    display: flex;
+  }
+`;
+
+const StyledMobileLogo = styled.img`
+  height: auto;
+  max-height: 36px;
+  width: auto;
 `;
 
 export const SignInUpV2 = () => {
@@ -188,29 +218,42 @@ export const SignInUpV2 = () => {
     workspacePublicData,
   ]);
 
-  return signInUpStep === SignInUpStep.WorkspaceCreation ? (
-    <OnboardingV2Layout
-      onBack={!isCreatingWorkspace ? onClickOnLogo : undefined}
-    >
-      <ModalContent isVerticallyCentered isHorizontallyCentered>
-        {signInUpForm}
-      </ModalContent>
-    </OnboardingV2Layout>
-  ) : (
-    <StyledBackground>
-      {signInUpStep === SignInUpStep.EmailVerification ? (
+  if (signInUpStep === SignInUpStep.WorkspaceCreation) {
+    return (
+      <OnboardingV2Layout
+        onBack={!isCreatingWorkspace ? onClickOnLogo : undefined}
+      >
         <ModalContent isVerticallyCentered isHorizontallyCentered>
-          <EmailVerificationSent email={searchParams.get('email')} />
+          {signInUpForm}
         </ModalContent>
-      ) : (
-        <SignInUpV2StandardContent
-          workspacePublicData={workspacePublicData}
-          signInUpForm={signInUpForm}
-          signInUpStep={signInUpStep}
-          title={title}
-          onClickOnLogo={onClickOnLogo}
-        />
-      )}
-    </StyledBackground>
+      </OnboardingV2Layout>
+    );
+  }
+
+  return (
+    <StyledSplitLayout>
+      <SignInUpLeftPanel />
+      <StyledRightPanel>
+        <StyledMobileHeader>
+          <StyledMobileLogo
+            src="/images/integrations/idda-crm-logo.png"
+            alt="IDDA CRM"
+          />
+        </StyledMobileHeader>
+        {signInUpStep === SignInUpStep.EmailVerification ? (
+          <ModalContent isVerticallyCentered isHorizontallyCentered>
+            <EmailVerificationSent email={searchParams.get('email')} />
+          </ModalContent>
+        ) : (
+          <SignInUpV2StandardContent
+            workspacePublicData={workspacePublicData}
+            signInUpForm={signInUpForm}
+            signInUpStep={signInUpStep}
+            title={title}
+            onClickOnLogo={onClickOnLogo}
+          />
+        )}
+      </StyledRightPanel>
+    </StyledSplitLayout>
   );
 };

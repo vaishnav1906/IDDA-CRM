@@ -251,7 +251,7 @@ export const WorkflowEditActionFormBuilder = ({
                 label: t`Learn more`,
                 onClick: () =>
                   window.open(
-                    'https://docs.twenty.com/user-guide/workflows/capabilities/workflow-actions#form',
+                    'https://idda-crm.com/docs/workflows/form-actions',
                     '_blank',
                     'noopener,noreferrer',
                   ),

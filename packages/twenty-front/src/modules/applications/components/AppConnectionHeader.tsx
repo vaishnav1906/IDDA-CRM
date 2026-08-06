@@ -34,9 +34,10 @@ const StyledAppLogoTile = styled.div`
 
 const StyledAppLogo = styled.img`
   border-radius: ${themeCssVariables.border.radius.sm};
-  height: ${themeCssVariables.spacing[10]};
-  object-fit: cover;
-  width: ${themeCssVariables.spacing[10]};
+  height: auto;
+  max-height: ${themeCssVariables.spacing[10]};
+  object-fit: contain;
+  width: 100%;
 `;
 
 const StyledLinkIconContainer = styled.div`
@@ -65,7 +66,7 @@ export const AppConnectionHeader = ({
   return (
     <StyledContainer>
       <StyledAppLogoTile>
-        <StyledAppLogo src={'/images/integrations/twenty-logo.svg'} alt="" />
+        <StyledAppLogo src={'/images/integrations/idda-crm-logo.png'} alt="IDDA CRM" />
       </StyledAppLogoTile>
       <StyledLinkIconContainer aria-hidden>
         <IconRefresh size={theme.icon.size.md} stroke={theme.icon.stroke.lg} />

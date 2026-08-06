@@ -3,6 +3,7 @@ import { AI_ACTIONS } from '@/workflow/workflow-steps/workflow-actions/constants
 import { CORE_ACTIONS } from '@/workflow/workflow-steps/workflow-actions/constants/CoreActions';
 import { FLOW_ACTIONS } from '@/workflow/workflow-steps/workflow-actions/constants/FlowActions';
 import { HUMAN_INPUT_ACTIONS } from '@/workflow/workflow-steps/workflow-actions/constants/HumanInputActions';
+import { IDDA_ACTIONS } from '@/workflow/workflow-steps/workflow-actions/constants/IddaActions';
 import { RECORD_ACTIONS } from '@/workflow/workflow-steps/workflow-actions/constants/RecordActions';
 
 export const getActionIcon = (actionType: WorkflowActionType) => {
@@ -33,6 +34,18 @@ export const getActionIcon = (actionType: WorkflowActionType) => {
       return FLOW_ACTIONS.find((item) => item.type === actionType)?.icon;
     case 'EMPTY':
       return 'IconSettingsAutomation';
+    case 'IDDA_NOTIFY':
+    case 'IDDA_ASSIGN_LEAD':
+    case 'IDDA_UPDATE_SLA':
+    case 'IDDA_CREATE_SUBSCRIPTION_TASK':
+    case 'IDDA_SEND_TASK_EMAIL':
+    case 'IDDA_CHECK_LEAD_NEXT_STEP':
+    case 'IDDA_CHECK_FIRST_CONTACT_SLA':
+    case 'IDDA_CHECK_MISSED_FOLLOWUPS':
+    case 'IDDA_HANDLE_OPP_WON':
+    case 'IDDA_CHECK_CANDIDATE_FOLLOWUPS':
+    case 'IDDA_CHECK_STALE_LEADS':
+      return IDDA_ACTIONS.find((item) => item.type === actionType)?.icon;
     default:
       return 'IconDefault';
   }

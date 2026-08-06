@@ -108,7 +108,7 @@ export class WorkflowVersionWorkspaceService {
           await workflowVersionRepository.update(existingDraftVersion.id, {
             steps: newWorkflowVersionSteps,
             trigger: newWorkflowVersionTrigger,
-          });
+          } as any);
 
           return {
             ...existingDraftVersion,
@@ -140,7 +140,7 @@ export class WorkflowVersionWorkspaceService {
           steps: newWorkflowVersionSteps,
           trigger: newWorkflowVersionTrigger,
           position,
-        });
+        } as any);
 
         const draftWorkflowVersion = insertResult
           .generatedMaps[0] as WorkflowVersionWorkspaceEntity;
@@ -315,7 +315,7 @@ export class WorkflowVersionWorkspaceService {
         await workflowVersionRepository.update(newDraftVersion.id, {
           steps: remappedSteps,
           trigger: remappedTrigger,
-        });
+        } as any);
 
         return {
           ...newDraftVersion,
@@ -387,7 +387,7 @@ export class WorkflowVersionWorkspaceService {
         ...(!isDefined(updatedSteps) ? {} : { steps: updatedSteps }),
       };
 
-      await workflowVersionRepository.update(workflowVersionId, updatePayload);
+      await workflowVersionRepository.update(workflowVersionId, updatePayload as any);
     }, authContext);
   }
 

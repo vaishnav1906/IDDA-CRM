@@ -49,6 +49,15 @@ import { MessagingModule } from 'src/modules/messaging/messaging.module';
 import { TimelineJobModule } from 'src/modules/timeline/jobs/timeline-job.module';
 import { TimelineActivityModule } from 'src/modules/timeline/timeline-activity.module';
 import { WorkflowModule } from 'src/modules/workflow/workflow.module';
+import { BusinessCalendarModule } from 'src/engine/core-modules/business-calendar/business-calendar.module';
+import { ConditionEngineModule } from 'src/modules/idda-condition-engine/condition-engine.module';
+import { IddaNotificationsModule } from 'src/modules/idda-notifications/idda-notifications.module';
+import { IddaWaitStateModule } from 'src/modules/idda-wait-state/idda-wait-state.module';
+import { IddaTimelineWriterModule } from 'src/modules/idda-timeline-writer/idda-timeline-writer.module';
+import { LeadFollowUpReminderModule } from 'src/modules/lead-follow-up-reminder/lead-follow-up-reminder.module';
+import { LeadGeocoderModule } from 'src/modules/lead-geocoder/lead-geocoder.module';
+import { CandidateFollowUpReminderModule } from 'src/modules/candidate-follow-up-reminder/candidate-follow-up-reminder.module';
+import { EmployeeExitHandoffModule } from 'src/modules/employee-exit-handoff/employee-exit-handoff.module';
 
 @Module({
   imports: [
@@ -89,6 +98,15 @@ import { WorkflowModule } from 'src/modules/workflow/workflow.module';
     EmailingModule,
     PreInstalledAppsModule,
     BillingReminderModule,
+    BusinessCalendarModule,
+    ConditionEngineModule,
+    IddaNotificationsModule,
+    IddaWaitStateModule,
+    IddaTimelineWriterModule,
+    LeadFollowUpReminderModule,
+    LeadGeocoderModule,
+    CandidateFollowUpReminderModule,
+    EmployeeExitHandoffModule,
   ],
   providers: [
     BillingReminderCronJob,

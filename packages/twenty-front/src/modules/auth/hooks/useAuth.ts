@@ -23,7 +23,8 @@ import {
 } from '~/generated-metadata/graphql';
 
 import { returnToPathState } from '@/auth/states/returnToPathState';
-import { tokenPairState } from '@/auth/states/tokenPairState';
+import { TOKEN_PAIR_LOCAL_STORAGE_KEY, tokenPairState } from '@/auth/states/tokenPairState';
+import { REMEMBER_ME_LOCAL_STORAGE_KEY } from '@/auth/constants/RememberMeLocalStorageKey';
 import { clearSessionLocalStorageKeys } from '@/auth/utils/clearSessionLocalStorageKeys';
 import { broadcastSignOutToOtherTabs } from '@/auth/utils/crossTabSignOut';
 import { isValidReturnToPath } from '@/auth/utils/isValidReturnToPath';
@@ -120,6 +121,16 @@ export const useAuth = () => {
   const handleSetAuthTokens = useCallback(
     (tokens: AuthTokenPair) => {
       setTokenPair(tokens);
+      // When "Remember me" is unchecked, move the token to sessionStorage so it
+      // is cleared when the browser tab closes. The Jotai atom uses localStorage
+      // by default; we override it here by clearing localStorage and writing to
+      // sessionStorage with the same key.
+      const rememberMe = localStorage.getItem(REMEMBER_ME_LOCAL_STORAGE_KEY) !== 'false';
+      if (!rememberMe) {
+        const serialized = JSON.stringify(tokens);
+        sessionStorage.setItem(TOKEN_PAIR_LOCAL_STORAGE_KEY, serialized);
+        localStorage.removeItem(TOKEN_PAIR_LOCAL_STORAGE_KEY);
+      }
     },
     [setTokenPair],
   );

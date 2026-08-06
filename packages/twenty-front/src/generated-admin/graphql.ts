@@ -841,7 +841,7 @@ export type UserLookup = {
 export type VersionInfo = {
   __typename?: 'VersionInfo';
   currentVersion?: Maybe<Scalars['String']['output']>;
-  latestVersion: Scalars['String']['output'];
+  latestVersion?: Maybe<Scalars['String']['output']>;
 };
 
 export type WorkerQueueMetrics = {
@@ -1139,7 +1139,7 @@ export type GetUpgradeStatusQuery = { __typename?: 'Query', getUpgradeStatus: Ar
 export type GetVersionInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetVersionInfoQuery = { __typename?: 'Query', versionInfo: { __typename?: 'VersionInfo', currentVersion?: string | null, latestVersion: string } };
+export type GetVersionInfoQuery = { __typename?: 'Query', versionInfo: { __typename?: 'VersionInfo', currentVersion?: string | null, latestVersion?: string | null } };
 
 export type WorkspaceBillingAdminPanelQueryVariables = Exact<{
   workspaceId: Scalars['UUID']['input'];

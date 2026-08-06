@@ -3,6 +3,8 @@ import { APP_FILTER, HttpAdapterHost } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 
 import { WorkspaceQueryRunnerModule } from 'src/engine/api/graphql/workspace-query-runner/workspace-query-runner.module';
+import { BusinessCalendarModule } from 'src/engine/core-modules/business-calendar/business-calendar.module';
+import { IddaVisitVerificationModule } from 'src/modules/idda-visit-verification/idda-visit-verification.module';
 import { ActorModule } from 'src/engine/core-modules/actor/actor.module';
 import { AdminPanelModule } from 'src/engine/core-modules/admin-panel/admin-panel.module';
 import { ApiKeyModule } from 'src/engine/core-modules/api-key/api-key.module';
@@ -63,9 +65,13 @@ import { UsageModule } from 'src/engine/core-modules/usage/usage.module';
 import { UserModule } from 'src/engine/core-modules/user/user.module';
 import { WorkflowApiModule } from 'src/engine/core-modules/workflow/workflow-api.module';
 import { WorkspaceInvitationModule } from 'src/engine/core-modules/workspace-invitation/workspace-invitation.module';
+import { WorkspaceJoinRequestModule } from 'src/engine/core-modules/workspace-join-request/workspace-join-request.module';
+import { DecisionRegisterModule } from 'src/engine/core-modules/decision-register/decision-register.module';
 import { WorkspaceModule } from 'src/engine/core-modules/workspace/workspace.module';
 import { AiBillingModule } from 'src/engine/metadata-modules/ai/ai-billing/ai-billing.module';
 import { AiModelsModule } from 'src/engine/metadata-modules/ai/ai-models/ai-models.module';
+import { MobileDeviceModule } from 'src/engine/core-modules/mobile-device/mobile-device.module';
+import { PushSubscriptionModule } from 'src/engine/core-modules/push-subscription/push-subscription.module';
 import { PageLayoutModule } from 'src/engine/metadata-modules/page-layout/page-layout.module';
 import { RoleModule } from 'src/engine/metadata-modules/role/role.module';
 import { RowLevelPermissionModule } from 'src/engine/metadata-modules/row-level-permission-predicate/row-level-permission.module';
@@ -110,6 +116,8 @@ import { FileModule } from './file/file.module';
     UserModule,
     WorkspaceModule,
     WorkspaceInvitationModule,
+    WorkspaceJoinRequestModule,
+    DecisionRegisterModule,
     WorkspaceSSOModule,
     ApprovedAccessDomainModule,
     EmailingDomainModule,
@@ -166,6 +174,10 @@ import { FileModule } from './file/file.module';
     EventLogsViewerModule,
     PreInstalledAppsModule,
     AppBillingModule,
+    BusinessCalendarModule,
+    IddaVisitVerificationModule,
+    MobileDeviceModule,
+    PushSubscriptionModule,
   ],
   providers: [
     {

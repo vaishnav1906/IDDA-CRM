@@ -589,6 +589,14 @@ const SettingsRoleAddObjectLevel = lazy(() =>
   ),
 );
 
+const SettingsIddaBusinessCalendar = lazy(() =>
+  import('~/pages/settings/idda/SettingsIddaBusinessCalendar').then(
+    (module) => ({
+      default: module.SettingsIddaBusinessCalendar,
+    }),
+  ),
+);
+
 type SettingsRoutesProps = {
   isFunctionSettingsEnabled?: boolean;
   isAdminPageEnabled?: boolean;
@@ -1012,6 +1020,10 @@ export const SettingsRoutes = ({ isAdminPageEnabled }: SettingsRoutesProps) => (
         }
       >
         <Route path={SettingsPath.Community} element={<SettingsCommunity />} />
+        <Route
+          path={SettingsPath.IddaBusinessCalendar}
+          element={<SettingsIddaBusinessCalendar />}
+        />
       </Route>
     </Routes>
   </Suspense>

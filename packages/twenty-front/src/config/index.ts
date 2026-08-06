@@ -19,3 +19,16 @@ const getDefaultUrl = () => {
 
 export const REACT_APP_SERVER_BASE_URL =
   window._env_?.REACT_APP_SERVER_BASE_URL || getDefaultUrl();
+
+// Google Maps browser key — restrict by HTTP referrer in Google Cloud Console.
+// Required APIs: Maps JavaScript API, Places API, Geocoding API.
+export const REACT_APP_GOOGLE_MAPS_API_KEY =
+  window._env_?.REACT_APP_GOOGLE_MAPS_API_KEY ||
+  (import.meta as any).env?.REACT_APP_GOOGLE_MAPS_API_KEY ||
+  '';
+
+// VAPID public key for Web Push notifications.
+export const REACT_APP_VAPID_PUBLIC_KEY =
+  window._env_?.REACT_APP_VAPID_PUBLIC_KEY ||
+  (import.meta as any).env?.REACT_APP_VAPID_PUBLIC_KEY ||
+  '';

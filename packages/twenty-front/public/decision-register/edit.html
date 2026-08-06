@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Edit Decision</title>
+<style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}}</style>
+<script src="https://cdn.tailwindcss.com"></script>
+<script id="tailwind-config">tailwind.config={theme:{extend:{"colors":{"outline-variant":"#c3c6d7","surface-variant":"#dae2fd","on-primary-container":"#eeefff","on-surface":"#131b2e","surface-tint":"#0053db","secondary":"#505f76","surface-container-high":"#e2e7ff","on-primary":"#ffffff","primary-container":"#2563eb","outline":"#737686","on-error":"#ffffff","background":"#faf8ff","on-background":"#131b2e","on-secondary-container":"#54647a","surface-container-low":"#f2f3ff","on-surface-variant":"#434655","surface-container-highest":"#dae2fd","on-error-container":"#93000a","error-container":"#ffdad6","surface":"#faf8ff","surface-container-lowest":"#ffffff","secondary-container":"#d0e1fb","on-secondary":"#ffffff","primary":"#004ac6","error":"#ba1a1a","surface-container":"#eaedff","tertiary-container":"#bc4800"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"xs":"4px","lg":"24px","2xl":"48px","gutter":"20px","margin-desktop":"32px","margin-mobile":"16px","md":"16px","sm":"8px","xl":"32px","base":"4px"}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+body{font-family:'Inter',sans-serif;}
+.material-symbols-outlined{font-family:'Material Symbols Outlined';font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;}
+textarea,input,select{font-family:'Inter',sans-serif;}
+#tagBox{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;background:#faf8ff;border-radius:12px;min-height:44px;cursor:text;}
+#tagBox input{border:none;outline:none;background:transparent;font-family:'Inter',sans-serif;font-size:14px;min-width:120px;flex:1;}
+.tag-chip{display:inline-flex;align-items:center;gap:4px;background:#eaedff;color:#004ac6;padding:3px 10px;border-radius:9999px;font-size:12px;font-weight:500;}
+.tag-chip button{background:none;border:none;cursor:pointer;color:#004ac6;padding:0;line-height:1;font-size:14px;}
+#tagSuggestions{position:absolute;background:#fff;border:1px solid #c3c6d7;border-radius:8px;max-height:180px;overflow-y:auto;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,0.1);min-width:200px;}
+#tagSuggestions div{padding:8px 14px;cursor:pointer;font-size:13px;color:#131b2e;}
+#tagSuggestions div:hover{background:#eaedff;color:#004ac6;}
+</style>
+</head>
+<body class="bg-background text-sm text-on-surface">
+
+<aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col border-r border-outline-variant">
+  <div class="px-8 py-6 flex items-center gap-2">
+    <span class="material-symbols-outlined text-primary">fact_check</span>
+    <span class="font-semibold text-lg text-on-surface">Decision Register</span>
+  </div>
+  <nav class="flex-1 px-2 space-y-1 px-4 mt-2">
+    <a href="dashboard.html" class="flex items-center px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container transition-all group gap-4">
+      <span class="material-symbols-outlined text-secondary">dashboard</span>
+      <span class="font-medium text-sm">Dashboard</span>
+    </a>
+    <a href="list.html" class="flex items-center px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container transition-all group gap-4">
+      <span class="material-symbols-outlined text-secondary">list</span>
+      <span class="font-medium text-sm">All Decisions</span>
+    </a>
+    <div class="pt-2 mt-2 border-t border-outline-variant">
+      <a href="http://localhost:3001" class="flex items-center px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container transition-all group gap-4">
+        <span class="material-symbols-outlined text-secondary">arrow_back</span>
+        <span class="font-medium text-sm">Back to CRM</span>
+      </a>
+    </div>
+  </nav>
+  <p class="px-6 pb-6 text-xs text-on-surface-variant">Title, Created By and Created At are read-only and cannot be edited.</p>
+</aside>
+
+<div class="pl-72">
+  <header class="fixed top-0 left-72 right-0 h-20 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.02)] z-40 flex items-center justify-between px-8 border-b border-outline-variant">
+    <div>
+      <a id="backLink" href="list.html" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-sm">
+        <span class="material-symbols-outlined">arrow_back</span>Back to decision
+      </a>
+      <p id="decisionTitle" class="text-xs text-on-surface-variant mt-0.5"></p>
+    </div>
+    <span class="text-xs text-outline italic" id="saveStatus">Unsaved changes</span>
+  </header>
+
+  <main class="relative pt-20 bg-background min-h-screen">
+    <div id="loading" class="p-12 text-center text-on-surface-variant">
+      <span class="material-symbols-outlined text-4xl">progress_activity</span>
+      <p class="mt-4">Loading…</p>
+    </div>
+    <div id="error" class="hidden mx-8 mt-4 p-4 bg-error-container text-on-error-container rounded-xl text-sm"></div>
+
+    <form id="editForm" class="hidden max-w-5xl mx-auto w-full px-8 py-8 space-y-12 mb-32">
+
+      <section>
+        <div class="flex items-baseline gap-6 mb-6">
+          <span class="text-5xl font-bold text-primary/10 select-none">01</span>
+          <h2 class="text-2xl font-semibold text-on-surface">Strategic Context</h2>
+        </div>
+        <div class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+            <div class="md:col-span-4">
+              <h3 class="font-semibold text-base text-on-surface">Problem Statement</h3>
+              <p class="text-sm text-on-surface-variant mt-2">The context behind this decision. <span class="text-error">*</span></p>
+            </div>
+            <div class="md:col-span-8">
+              <textarea id="context" class="w-full bg-surface-container-lowest p-6 rounded-xl border-none focus:ring-2 ring-primary resize-none outline-none text-sm" rows="5"></textarea>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+            <div class="md:col-span-4">
+              <h3 class="font-semibold text-base text-on-surface">Decision Summary</h3>
+              <p class="text-sm text-on-surface-variant mt-2">What was decided and why. <span class="text-error">*</span></p>
+            </div>
+            <div class="md:col-span-8">
+              <textarea id="decisionSummary" class="w-full bg-surface-container-lowest p-6 rounded-xl border-none focus:ring-2 ring-primary resize-none outline-none text-sm" rows="5"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="flex items-baseline gap-6 mb-6">
+          <span class="text-5xl font-bold text-primary/10 select-none">02</span>
+          <h2 class="text-2xl font-semibold text-on-surface">Classification</h2>
+        </div>
+        <div class="bg-surface-container-lowest p-8 rounded-xl shadow-sm grid grid-cols-12 gap-6">
+          <div class="col-span-12 md:col-span-6">
+            <label class="block font-medium text-on-surface-variant mb-2 text-xs">Category</label>
+            <select id="category" class="w-full bg-surface p-4 rounded-lg border-none focus:ring-2 ring-primary appearance-none text-sm outline-none">
+              <option value="">None</option>
+              <option>Architecture</option><option>Technology</option><option>Product</option>
+              <option>Business</option><option>Process</option><option>Operations</option>
+              <option>Security</option><option>Other</option>
+            </select>
+          </div>
+          <div class="col-span-12 md:col-span-6">
+            <label class="block font-medium text-on-surface-variant mb-2 text-xs">Tags — type <span class="font-mono bg-surface-container px-1 rounded">#</span> to search</label>
+            <div style="position:relative">
+              <div id="tagBox" onclick="document.getElementById('tagInput').focus()">
+                <input id="tagInput" placeholder="#tag" autocomplete="off"/>
+              </div>
+              <div id="tagSuggestions" class="hidden" style="top:100%;left:0;right:0;margin-top:4px;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-baseline gap-6">
+            <span class="text-5xl font-bold text-primary/10 select-none">03</span>
+            <h2 class="text-2xl font-semibold text-on-surface">Key Metrics</h2>
+          </div>
+          <button class="flex items-center gap-2 bg-primary text-on-primary px-8 py-3 rounded-full font-medium text-sm hover:scale-105 transition-transform" id="addOptionBtn" type="button">
+            <span class="material-symbols-outlined">add</span>Add Option
+          </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="optionsContainer"></div>
+      </section>
+
+      <section>
+        <div class="flex items-baseline gap-6 mb-6">
+          <span class="text-5xl font-bold text-primary/10 select-none">04</span>
+          <h2 class="text-2xl font-semibold text-on-surface">Outcome</h2>
+        </div>
+        <div class="bg-surface-container-lowest p-8 rounded-xl">
+          <label class="block font-medium text-on-surface-variant mb-2 text-xs uppercase tracking-widest">Post-Implementation Result (Optional)</label>
+          <textarea id="outcome" class="w-full bg-transparent border-none focus:ring-0 p-0 outline-none text-sm text-on-surface" placeholder="Record the actual outcome after implementation…" rows="5"></textarea>
+        </div>
+      </section>
+
+    </form>
+
+    <div class="fixed bottom-0 left-72 right-0 bg-surface/80 backdrop-blur-xl border-t border-outline-variant z-40 px-8 py-3">
+      <div class="flex items-center justify-between">
+        <a id="cancelBtn" href="list.html" class="px-6 py-2.5 text-on-surface-variant font-medium text-sm hover:bg-surface-container rounded-lg transition-colors">Discard</a>
+        <div class="flex items-center gap-3">
+          <div class="relative" id="approverWrapper">
+            <button type="button" id="approverBtn" onclick="toggleApproverMenu()"
+              class="flex items-center gap-2 bg-surface-container border border-outline-variant rounded-lg px-3 py-2 text-sm text-on-surface outline-none min-w-[180px] hover:border-primary transition-colors">
+              <span class="material-symbols-outlined text-sm text-on-surface-variant">approval</span>
+              <span id="approverBtnLabel">Request approval from…</span>
+              <span class="material-symbols-outlined text-sm ml-auto text-on-surface-variant">expand_more</span>
+            </button>
+            <div id="approverMenu" class="hidden absolute bottom-full mb-2 right-0 bg-surface border border-outline-variant rounded-xl shadow-xl z-50 min-w-[220px] py-2 max-h-60 overflow-y-auto">
+              <div id="approverList" class="px-1"></div>
+            </div>
+          </div>
+          <button id="submitBtn" type="submit" form="editForm" class="px-8 py-2.5 bg-primary text-on-primary font-medium text-sm rounded-lg hover:shadow-xl hover:shadow-primary/30 transform active:scale-95 transition-all">
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const SERVER = 'http://localhost:3000';
+const id = new URLSearchParams(location.search).get('id');
+let optionCount = 0;
+let tagsList = [];
+let allTags = [];
+
+function renderTagChips() {
+  const box = document.getElementById('tagBox');
+  const input = document.getElementById('tagInput');
+  box.querySelectorAll('.tag-chip').forEach(c => c.remove());
+  tagsList.forEach(tag => {
+    const chip = document.createElement('span');
+    chip.className = 'tag-chip';
+    chip.innerHTML = `${tag}<button type="button" onclick="removeTag('${tag.replace(/'/g,"\\'")}')">×</button>`;
+    box.insertBefore(chip, input);
+  });
+}
+function removeTag(tag) { tagsList = tagsList.filter(t => t !== tag); renderTagChips(); }
+function addTag(tag) {
+  const t = tag.startsWith('#') ? tag : `#${tag}`;
+  if (t.length > 1 && !tagsList.includes(t)) { tagsList.push(t); renderTagChips(); }
+}
+async function loadTags() {
+  try {
+    const res = await fetch(`${SERVER}/rest/decision-register/tags`, { headers: { Authorization: `Bearer ${getToken()}` } });
+    allTags = await res.json();
+  } catch { allTags = []; }
+}
+function showTagSuggestions(q) {
+  const box = document.getElementById('tagSuggestions');
+  const matches = allTags.filter(t => t.toLowerCase().includes(q.toLowerCase())).slice(0, 8);
+  if (!matches.length) { box.classList.add('hidden'); return; }
+  box.innerHTML = matches.map(t => `<div onclick="pickTag('${t.replace(/'/g,"\\'")}')"><span class="text-primary font-medium">${t}</span></div>`).join('');
+  box.classList.remove('hidden');
+}
+function pickTag(tag) { addTag(tag); document.getElementById('tagInput').value = ''; document.getElementById('tagSuggestions').classList.add('hidden'); }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const tagInput = document.getElementById('tagInput');
+  tagInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ',' || e.key === ' ') {
+      e.preventDefault();
+      const val = tagInput.value.trim().replace(/,/g,'');
+      if (val) { addTag(val); tagInput.value = ''; document.getElementById('tagSuggestions').classList.add('hidden'); }
+    } else if (e.key === 'Backspace' && !tagInput.value && tagsList.length) { tagsList.pop(); renderTagChips(); }
+  });
+  tagInput.addEventListener('input', () => {
+    const val = tagInput.value;
+    if (val.length >= 1) showTagSuggestions(val); else document.getElementById('tagSuggestions').classList.add('hidden');
+  });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#tagBox') && !e.target.closest('#tagSuggestions')) document.getElementById('tagSuggestions').classList.add('hidden');
+  });
+});
+
+let _token = null;
+function getToken() { return _token; }
+
+function _getRawPair() {
+  try {
+    const raw = localStorage.getItem('tokenPairState') || sessionStorage.getItem('tokenPairState');
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+function _jwtExpired(token) {
+  try {
+    const p = JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
+    return p.exp * 1000 < Date.now() + 60000;
+  } catch { return false; }
+}
+async function _renewPair(rt) {
+  const res = await fetch(`${SERVER}/graphql`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: `mutation { renewToken(appToken: "${rt}") { tokens { accessToken { token expiresAt } refreshToken { token expiresAt } } } }` }),
+  });
+  const json = await res.json();
+  return json?.data?.renewToken?.tokens ?? null;
+}
+function _savePair(tokens) {
+  try {
+    const key = 'tokenPairState';
+    const src = localStorage.getItem(key) ? localStorage : sessionStorage;
+    const existing = JSON.parse(src.getItem(key) || '{}');
+    src.setItem(key, JSON.stringify({ ...existing, accessOrWorkspaceAgnosticToken: tokens.accessToken, refreshToken: tokens.refreshToken }));
+  } catch {}
+}
+async function initToken() {
+  const pair = _getRawPair();
+  if (!pair?.accessOrWorkspaceAgnosticToken?.token) { window.location.href = '/welcome'; return; }
+  if (_jwtExpired(pair.accessOrWorkspaceAgnosticToken.token)) {
+    const rt = pair.refreshToken?.token;
+    if (!rt) { window.location.href = '/welcome'; return; }
+    try {
+      const tokens = await _renewPair(rt);
+      if (!tokens) throw new Error();
+      _savePair(tokens);
+      _token = tokens.accessToken.token;
+    } catch { window.location.href = '/welcome'; }
+  } else {
+    _token = pair.accessOrWorkspaceAgnosticToken.token;
+  }
+}
+
+function addOptionCard(text='') {
+  optionCount++;
+  const label = String.fromCharCode(64 + optionCount);
+  const card = document.createElement('div');
+  card.className = 'option-card bg-surface-container-lowest p-8 rounded-xl shadow-sm border-l-4 border-primary/20 relative group hover:border-primary transition-all';
+  card.innerHTML = `
+    <div class="flex justify-between items-start mb-6">
+      <span class="bg-primary/10 text-primary px-4 py-1 rounded-full text-xs font-medium uppercase tracking-widest">Metric ${label}</span>
+      <button class="text-outline hover:text-error transition-colors opacity-0 group-hover:opacity-100" type="button" onclick="this.closest('.option-card').remove()">
+        <span class="material-symbols-outlined">delete</span>
+      </button>
+    </div>
+    <input class="option-text w-full bg-transparent border-none font-semibold text-base focus:ring-0 p-0 text-on-surface outline-none" placeholder="Option description" type="text" value="${text.replace(/"/g,'&quot;')}"/>
+  `;
+  document.getElementById('optionsContainer').appendChild(card);
+}
+
+document.getElementById('addOptionBtn').addEventListener('click', () => addOptionCard());
+
+async function load() {
+  if (!id) { location.href = 'list.html'; return; }
+  const token = getToken();
+  if (!token) { location.href = '/welcome'; return; }
+
+  const res = await fetch(`${SERVER}/rest/decision-register/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+  if (!res.ok) { location.href = 'list.html'; return; }
+  const d = await res.json();
+
+  document.title = 'Edit: ' + d.title;
+  document.getElementById('decisionTitle').textContent = d.title;
+  document.getElementById('backLink').href = `detail.html?id=${id}`;
+  document.getElementById('cancelBtn').href = `detail.html?id=${id}`;
+
+  document.getElementById('context').value = d.context || '';
+  document.getElementById('decisionSummary').value = d.decisionSummary || '';
+  document.getElementById('category').value = d.category || '';
+  tagsList = (d.tags || []).map(t => t.startsWith('#') ? t : `#${t}`);
+  renderTagChips();
+  document.getElementById('outcome').value = d.outcome || '';
+  (d.options || []).forEach(opt => addOptionCard(opt.optionText));
+
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('editForm').classList.remove('hidden');
+  loadMembers(d.requestedApproverIds || []);
+}
+
+document.getElementById('editForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const token = getToken();
+  const context = document.getElementById('context').value.trim();
+  const decisionSummary = document.getElementById('decisionSummary').value.trim();
+  const errEl = document.getElementById('error');
+  errEl.classList.add('hidden');
+
+  if (!context || !decisionSummary) {
+    errEl.textContent = 'Problem Statement and Decision Summary are required.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  const tags = [...tagsList];
+  const options = [...document.querySelectorAll('.option-text')].map(i => i.value.trim()).filter(Boolean);
+  const category = document.getElementById('category').value;
+  const outcome = document.getElementById('outcome').value.trim();
+
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = 'Saving…'; btn.disabled = true;
+  document.getElementById('saveStatus').textContent = 'Saving…';
+
+  const requestedApproverIds = [...document.querySelectorAll('#approverList input:checked')].map(c => c.value);
+  const body = { context, decisionSummary, tags, options };
+  if (category) body.category = category; else body.category = null;
+  if (outcome) body.outcome = outcome;
+  body.requestedApproverIds = requestedApproverIds;
+
+  const res = await fetch(`${SERVER}/rest/decision-register/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify(body)
+  });
+
+  if (res.ok) {
+    location.href = `detail.html?id=${id}`;
+  } else {
+    const err = await res.json().catch(() => ({}));
+    errEl.textContent = err.message || 'Failed to save. Please try again.';
+    errEl.classList.remove('hidden');
+    btn.textContent = 'Save Changes'; btn.disabled = false;
+    document.getElementById('saveStatus').textContent = 'Unsaved changes';
+  }
+});
+
+function toggleApproverMenu() {
+  document.getElementById('approverMenu')?.classList.toggle('hidden');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('#approverWrapper')) document.getElementById('approverMenu')?.classList.add('hidden');
+});
+function updateApproverLabel() {
+  const checked = [...document.querySelectorAll('#approverList input:checked')];
+  document.getElementById('approverBtnLabel').textContent = checked.length === 0 ? 'Request approval from…'
+    : checked.length === 1 ? checked[0].dataset.name
+    : `${checked.length} approvers selected`;
+}
+
+function escHtml(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+async function loadMembers(selectedIds = []) {
+  const token = getToken();
+  try {
+    const res = await fetch(`${SERVER}/rest/decision-register/members`, { headers: { Authorization: `Bearer ${token}` } });
+    if (!res.ok) return;
+    const members = await res.json();
+    const list = document.getElementById('approverList');
+    list.innerHTML = members.map(m => `
+      <label class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-container cursor-pointer text-sm text-on-surface">
+        <input type="checkbox" value="${m.id}" data-name="${escHtml(m.name)}"
+          ${selectedIds.includes(m.id) ? 'checked' : ''}
+          onchange="updateApproverLabel()"
+          class="rounded border-outline-variant text-primary focus:ring-primary">
+        <span>${escHtml(m.name)}</span>
+        <span class="text-xs text-on-surface-variant ml-auto truncate max-w-[80px]">${escHtml(m.email)}</span>
+      </label>`).join('');
+    updateApproverLabel();
+  } catch {}
+}
+
+(async () => { await initToken(); await load(); loadTags(); })();
+</script>
+</body></html>

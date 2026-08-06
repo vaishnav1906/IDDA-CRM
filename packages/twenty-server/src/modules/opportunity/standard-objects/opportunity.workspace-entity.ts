@@ -8,6 +8,7 @@ import { type NoteTargetWorkspaceEntity } from 'src/modules/note/standard-object
 import { type PersonWorkspaceEntity } from 'src/modules/person/standard-objects/person.workspace-entity';
 import { type TaskTargetWorkspaceEntity } from 'src/modules/task/standard-objects/task-target.workspace-entity';
 import { type TimelineActivityWorkspaceEntity } from 'src/modules/timeline/standard-objects/timeline-activity.workspace-entity';
+import { type SubscriptionWorkspaceEntity } from 'src/modules/subscription/standard-objects/subscription.workspace-entity';
 import { type WorkspaceMemberWorkspaceEntity } from 'src/modules/workspace-member/standard-objects/workspace-member.workspace-entity';
 
 export class OpportunityWorkspaceEntity extends BaseWorkspaceEntity {
@@ -28,6 +29,7 @@ export class OpportunityWorkspaceEntity extends BaseWorkspaceEntity {
   timelineActivities: EntityRelation<TimelineActivityWorkspaceEntity[]>;
   owner: EntityRelation<WorkspaceMemberWorkspaceEntity> | null;
   ownerId: string | null;
+  subscriptions: EntityRelation<SubscriptionWorkspaceEntity[]>;
   /** @deprecated */
   probability: string;
   searchVector: string;

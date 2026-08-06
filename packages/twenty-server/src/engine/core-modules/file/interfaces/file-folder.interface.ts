@@ -63,6 +63,12 @@ export const fileFolderConfigs: Record<FileFolder, FileFolderConfig> = {
   [FileFolder.GeneratedSdkClient]: {
     ignoreExpirationToken: false,
   },
+  [FileFolder.VisitSelfie]: {
+    ignoreExpirationToken: false,
+  },
+  [FileFolder.ClinicPhoto]: {
+    ignoreExpirationToken: false,
+  },
 };
 
 export type AllowedFolders = KebabCase<keyof typeof FileFolder>;

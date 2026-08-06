@@ -726,4 +726,52 @@ export const buildWorkspaceMemberStandardFlatFieldMetadatas = ({
     twentyStandardApplicationId,
     now,
   }),
+  // IDDA: inverse side of Candidate.assignedTo
+  assignedCandidates: createStandardRelationFieldFlatMetadata({
+    objectName,
+    workspaceId,
+    context: {
+      type: FieldMetadataType.RELATION,
+      morphId: null,
+      fieldName: 'assignedCandidates',
+      label: i18nLabel(msg`Assigned Candidates`),
+      description: i18nLabel(msg`Candidates assigned to this workspace member`),
+      icon: 'IconUserSearch',
+      isNullable: true,
+      isUIEditable: false,
+      targetObjectName: 'candidate',
+      targetFieldName: 'assignedTo',
+      settings: {
+        relationType: RelationType.ONE_TO_MANY,
+      },
+    },
+    standardObjectMetadataRelatedEntityIds,
+    dependencyFlatEntityMaps,
+    twentyStandardApplicationId,
+    now,
+  }),
+  // IDDA: inverse side of Visit.employee
+  visits: createStandardRelationFieldFlatMetadata({
+    objectName,
+    workspaceId,
+    context: {
+      type: FieldMetadataType.RELATION,
+      morphId: null,
+      fieldName: 'visits',
+      label: i18nLabel(msg`Visits`),
+      description: i18nLabel(msg`Visits conducted by this workspace member`),
+      icon: 'IconCalendarCheck',
+      isNullable: true,
+      isUIEditable: false,
+      targetObjectName: 'visit',
+      targetFieldName: 'employee',
+      settings: {
+        relationType: RelationType.ONE_TO_MANY,
+      },
+    },
+    standardObjectMetadataRelatedEntityIds,
+    dependencyFlatEntityMaps,
+    twentyStandardApplicationId,
+    now,
+  }),
 });

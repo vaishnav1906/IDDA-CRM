@@ -56,6 +56,9 @@ export const STANDARD_OBJECTS = {
       targetLead: {
         universalIdentifier: '0af494c1-2b03-45bb-a76d-32bddb4daa12',
       },
+      targetCandidate: {
+        universalIdentifier: 'e1e2e3e4-0300-4300-a300-c0cand000300',
+      },
       position: {
         universalIdentifier: 'cef8f62c-cd46-4444-8cbb-17d463b7464a',
       },
@@ -769,6 +772,9 @@ export const STANDARD_OBJECTS = {
       // IDDA Clinic fields
       leads: {
         universalIdentifier: 'de29a164-f8c3-4297-adb5-dbcffa141d37',
+      },
+      visits: {
+        universalIdentifier: 'b7e8f9a0-1234-5678-bcde-a1b2c3d4e5f6',
       },
       subscriptions: {
         universalIdentifier: 'cd75e098-2c6a-414d-a2f1-85d927d91d83',
@@ -1715,6 +1721,9 @@ export const STANDARD_OBJECTS = {
       targetLead: {
         universalIdentifier: 'ec3ad78b-e633-4473-a78d-332f0879fe31',
       },
+      targetCandidate: {
+        universalIdentifier: 'e1e2e3e4-0301-4301-a301-c0cand000301',
+      },
       createdBy: {
         universalIdentifier: '820a3163-bb7d-41bc-93d9-81a464559c48',
       },
@@ -1804,6 +1813,7 @@ export const STANDARD_OBJECTS = {
       },
       company: { universalIdentifier: '20202020-cbac-457e-b565-adece5fc815f' },
       owner: { universalIdentifier: '20202020-be7e-4d1e-8e19-3d5c7c4b9f2a' },
+      subscriptions: { universalIdentifier: 'b2c3d4e5-4001-4001-8001-000000000001' },
       taskTargets: {
         universalIdentifier: '20202020-59c0-4179-a208-4a255f04a5be',
       },
@@ -2050,6 +2060,11 @@ export const STANDARD_OBJECTS = {
     views: {
       allPeople: {
         universalIdentifier: '20202020-a002-4a02-8a02-ae0a1ea11a00',
+        viewFilters: {
+          isPrimaryDoctorIsTrue: {
+            universalIdentifier: 'f9a0b1c2-d3e4-5678-bcde-901234567890',
+          },
+        },
         viewFields: {
           name: {
             universalIdentifier: '20202020-af02-4a02-8a02-ae0a1ea11af0',
@@ -2409,6 +2424,9 @@ export const STANDARD_OBJECTS = {
       targetLead: {
         universalIdentifier: '13420524-b400-4783-9409-3fa9c50fd0cd',
       },
+      targetCandidate: {
+        universalIdentifier: 'e1e2e3e4-0302-4302-a302-c0cand000302',
+      },
       createdBy: {
         universalIdentifier: '65fe2a53-45e4-4225-9711-b827f55e51cc',
       },
@@ -2523,6 +2541,9 @@ export const STANDARD_OBJECTS = {
       },
       targetLead: {
         universalIdentifier: 'dfe06caf-4e56-49fd-9c1e-5638f7a2b77e',
+      },
+      targetCandidate: {
+        universalIdentifier: 'e1e2e3e4-0303-4303-a303-c0cand000303',
       },
       linkedRecordCachedName: {
         universalIdentifier: '20202020-cfdb-4bef-bbce-a29f41230934',
@@ -3064,6 +3085,7 @@ export const STANDARD_OBJECTS = {
       clinic: { universalIdentifier: 'e5489e5f-d4f0-423d-9ec3-fa5615dcba1b' },
       doctor: { universalIdentifier: 'f26acd5f-b8a6-4c19-a4c0-e2828696cc22' },
       assignedEmployee: { universalIdentifier: 'c47e6619-e7a4-4f8f-8277-795857513395' },
+      opportunity: { universalIdentifier: 'a2b3c4d5-3001-4001-8001-000000000001' },
     },
     indexes: {},
     views: {
@@ -3140,6 +3162,7 @@ export const STANDARD_OBJECTS = {
       priority: { universalIdentifier: '0c79f105-b404-4f68-92ba-b4a68ed976b2' },
       source: { universalIdentifier: '0277d38b-0679-4cfc-9884-c8c7de88273e' },
       importedAt: { universalIdentifier: 'e2c867d6-0b46-4a2d-a364-50e0bba0e5bf' },
+      nextFollowUpDate: { universalIdentifier: 'e4f5a6b7-c8d9-0123-bcde-901234567890' },
       // Relations
       assignedTo: { universalIdentifier: '51386d04-1d2b-4ba1-b7cc-86c5d6f7733c' },
       clinic: { universalIdentifier: '2f4f4849-4e4e-44dc-84a1-1615995c127b' },
@@ -3191,6 +3214,8 @@ export const STANDARD_OBJECTS = {
           importedAt: { universalIdentifier: '87e1fd9c-057d-4d33-aac2-b846d906a07b' },
           website: { universalIdentifier: '55e5e8b8-0975-4edd-ac14-2e574851517b' },
           mapsUrl: { universalIdentifier: '892810c7-4fe3-4670-ad52-cc992ead2e1e' },
+          latitude: { universalIdentifier: 'b4e910a2-7f34-4c56-a012-3d4e5f6a7b8c' },
+          longitude: { universalIdentifier: 'c5f020b3-8a45-5d67-b123-4e5f6a7b8c9d' },
           extractedAt: { universalIdentifier: 'd25aff9d-d1ce-4354-9bc2-404bc0f04436' },
           clinic: { universalIdentifier: '077c19d7-c8f8-49b2-b032-6e1dd86a8312' },
           doctor: { universalIdentifier: '393023db-1581-40fd-aea0-1ef788f6a93e' },
@@ -3287,9 +3312,17 @@ export const STANDARD_OBJECTS = {
       assignedLeads: {
         universalIdentifier: '538af1d9-09f2-43dd-9e09-a095481da168',
       },
+      // IDDA: inverse side of Candidate.assignedTo
+      assignedCandidates: {
+        universalIdentifier: 'e1e2e3e4-0304-4304-a304-c0cand000304',
+      },
       // IDDA: inverse side of Subscription.assignedEmployee
       managedSubscriptions: {
         universalIdentifier: '20f1b505-f28e-4c0f-9f62-68bff0a8c49c',
+      },
+      // IDDA: inverse side of Visit.employee
+      visits: {
+        universalIdentifier: 'c8d9e0f1-2345-6789-bcde-b2c3d4e5f6a7',
       },
     },
     indexes: {
@@ -3340,6 +3373,240 @@ export const STANDARD_OBJECTS = {
         },
       },
     },
+  },
+  // IDDA Teams object — internal employee directory, synced from workspace members
+  teamMember: {
+    universalIdentifier: 'c1c2c3c4-d5e6-7890-abcd-ef0123456789',
+    fields: {
+      id: { universalIdentifier: 'c2c3c4d5-e6f7-8901-bcde-f01234567890' },
+      createdAt: { universalIdentifier: 'c3c4d5e6-f7a8-9012-bcde-012345678901' },
+      updatedAt: { universalIdentifier: 'c4c5d6e7-a8b9-0123-bcde-123456789012' },
+      deletedAt: { universalIdentifier: 'c5c6d7e8-b9c0-1234-bcde-234567890123' },
+      position: { universalIdentifier: 'c6c7d8e9-c0d1-2345-bcde-345678901234' },
+      createdBy: { universalIdentifier: 'c7c8d9e0-d1e2-3456-bcde-456789012345' },
+      updatedBy: { universalIdentifier: 'c8c9d0e1-e2f3-4567-bcde-567890123456' },
+      searchVector: { universalIdentifier: 'c9c0d1e2-f3a4-5678-bcde-678901234567' },
+      name: { universalIdentifier: 'd0d1e2f3-a4b5-6789-bcde-789012345678' },
+      workEmail: { universalIdentifier: 'd1d2e3f4-b5c6-7890-bcde-890123456789' },
+      phone: { universalIdentifier: 'd2d3e4f5-c6d7-8901-bcde-901234567890' },
+      roleLabel: { universalIdentifier: 'd3d4e5f6-d7e8-9012-bcde-012345678901' },
+      department: { universalIdentifier: 'd4d5e6f7-e8f9-0123-bcde-123456789012' },
+      employmentStatus: { universalIdentifier: 'd5d6e7f8-f9a0-1234-bcde-234567890123' },
+      employeeType: { universalIdentifier: 'd6d7e8f9-a0b1-2345-bcde-345678901234' },
+      joiningDate: { universalIdentifier: 'd7d8e9f0-b1c2-3456-bcde-456789012345' },
+      location: { universalIdentifier: 'd8d9e0f1-c2d3-4567-bcde-567890123456' },
+      workspaceMemberId: { universalIdentifier: 'd9d0e1f2-d3e4-5678-bcde-678901234567' },
+      userId: { universalIdentifier: 'e0e1f2a3-e4f5-6789-bcde-789012345678' },
+      source: { universalIdentifier: 'e1e2f3a4-f5a6-7890-bcde-890123456789' },
+      lastSyncedAt: { universalIdentifier: 'e2e3f4a5-a6b7-8901-bcde-901234567890' },
+      reportingManager: { universalIdentifier: 'e3e4f5a6-b7c8-9012-bcde-012345678901' },
+    },
+    indexes: {
+      workspaceMemberIdUniqueIndex: {
+        universalIdentifier: 'a1a2b3c4-d5e6-7890-bcde-901234567890',
+      },
+      searchVectorGinIndex: {
+        universalIdentifier: 'a2b3c4d5-e6f7-8901-bcde-012345678901',
+      },
+    },
+    views: {
+      allTeamMembers: {
+        universalIdentifier: 'f1f2a3b4-c5d6-7890-bcde-123456789012',
+        viewFields: {
+          name: { universalIdentifier: 'f3f4a5b6-e7f8-9012-bcde-345678901234' },
+          workEmail: { universalIdentifier: 'f4f5a6b7-f8a9-0123-bcde-456789012345' },
+          department: { universalIdentifier: 'f5f6a7b8-a9b0-1234-bcde-567890123456' },
+          roleLabel: { universalIdentifier: 'f6f7a8b9-b0c1-2345-bcde-678901234567' },
+          employmentStatus: { universalIdentifier: 'f7f8a9b0-c1d2-3456-bcde-789012345678' },
+          phone: { universalIdentifier: 'f8f9a0b1-d2e3-4567-bcde-890123456789' },
+        },
+      },
+      teamMemberRecordPageFields: {
+        universalIdentifier: 'f2f3a4b5-d6e7-8901-bcde-234567890123',
+        viewFieldGroups: {
+          identity: { universalIdentifier: 'fa1a2b3c-d4e5-6789-bcde-901234567890' },
+          employment: { universalIdentifier: 'fb1b2c3d-e5f6-7890-bcde-012345678901' },
+          sync: { universalIdentifier: 'fc1c2d3e-f6a7-8901-bcde-123456789012' },
+        },
+        viewFields: {
+          name: { universalIdentifier: 'fd1d2e3f-a7b8-9012-bcde-234567890123' },
+          workEmail: { universalIdentifier: 'fe1e2f3a-b8c9-0123-bcde-345678901234' },
+          phone: { universalIdentifier: 'ff1f2a3b-c9d0-1234-bcde-456789012345' },
+          roleLabel: { universalIdentifier: 'aa0a1b2c-d0e1-2345-bcde-567890123456' },
+          department: { universalIdentifier: 'ab0b1c2d-e1f2-3456-bcde-678901234567' },
+          employmentStatus: { universalIdentifier: 'ac0c1d2e-f2a3-4567-bcde-789012345678' },
+          employeeType: { universalIdentifier: 'ad0d1e2f-a3b4-5678-bcde-890123456789' },
+          joiningDate: { universalIdentifier: 'ae0e1f2a-b4c5-6789-bcde-901234567890' },
+          location: { universalIdentifier: 'af0f1a2b-c5d6-7890-bcde-012345678901' },
+          source: { universalIdentifier: 'ba0a1b2c-d6e7-8901-bcde-123456789012' },
+          lastSyncedAt: { universalIdentifier: 'bb0b1c2d-e7f8-9012-bcde-234567890123' },
+          reportingManager: { universalIdentifier: 'bc0c1d2e-f8a9-0123-bcde-345678901234' },
+        },
+      },
+    },
+  },
+  // IDDA Visit Verification object
+  visit: {
+    universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000100',
+    fields: {
+      id: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000101' },
+      createdAt: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000102' },
+      updatedAt: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000103' },
+      deletedAt: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000104' },
+      position: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000105' },
+      createdBy: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000106' },
+      updatedBy: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000107' },
+      searchVector: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000108' },
+      clinic: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000110' },
+      employee: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000111' },
+      visitDate: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000112' },
+      visitNotes: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000113' },
+      latitude: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000114' },
+      longitude: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000115' },
+      visitAddress: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000116' },
+      selfie: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000117' },
+      selfieHash: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000118' },
+      selfieStatus: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000119' },
+      gpsAccuracy: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000120' },
+      distanceFromClinic: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000121' },
+      locationStatus: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000122' },
+      liveCameraCapture: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000123' },
+      imageReused: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000124' },
+      verificationScore: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000125' },
+      verificationStatus: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000126' },
+      reviewDecision: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000127' },
+      reviewComment: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000132' },
+      deviceIdentifier: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000128' },
+      captureSource: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000129' },
+      clinicPhoto: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000131' },
+      selfiePhoto: { universalIdentifier: '8b0008c0-3153-49d6-a281-9096e1e3c033' },
+    },
+    indexes: {
+      clinicIdIndex: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000140' },
+      searchVectorGinIndex: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000141' },
+    },
+    views: {
+      allVisits: {
+        universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000150',
+        viewFields: {
+          visitDate: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000160' },
+          clinic: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000161' },
+          employee: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000162' },
+          verificationStatus: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000163' },
+          verificationScore: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000164' },
+          distanceFromClinic: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000165' },
+        },
+      },
+      visitRecordPageFields: {
+        universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000151',
+        viewFieldGroups: {
+          verification: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000170' },
+          location: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000171' },
+          capture: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000172' },
+          review: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000173' },
+        },
+        viewFields: {
+          selfieStatus: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000180' },
+          verificationStatus: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000181' },
+          verificationScore: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000182' },
+          reviewDecision: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000183' },
+          latitude: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000184' },
+          longitude: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000185' },
+          visitAddress: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000186' },
+          gpsAccuracy: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000187' },
+          distanceFromClinic: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000188' },
+          locationStatus: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000189' },
+          selfie: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000190' },
+          liveCameraCapture: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000191' },
+          imageReused: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000192' },
+          captureSource: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000193' },
+          deviceIdentifier: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000194' },
+          visitNotes: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000195' },
+          visitDate: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000196' },
+          clinic: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000197' },
+          employee: { universalIdentifier: 'a0b1c2d3-e4f5-6789-abcd-000000000198' },
+        },
+      },
+    },
+  },
+  // IDDA Candidate object — HR / sales candidates
+  candidate: {
+    universalIdentifier: 'e1e2e3e4-1111-4111-a111-c0cand000001',
+    fields: {
+      id: { universalIdentifier: 'e1e2e3e4-0001-4001-a001-c0cand000001' },
+      createdAt: { universalIdentifier: 'e1e2e3e4-0002-4002-a002-c0cand000002' },
+      updatedAt: { universalIdentifier: 'e1e2e3e4-0003-4003-a003-c0cand000003' },
+      deletedAt: { universalIdentifier: 'e1e2e3e4-0004-4004-a004-c0cand000004' },
+      position: { universalIdentifier: 'e1e2e3e4-0005-4005-a005-c0cand000005' },
+      createdBy: { universalIdentifier: 'e1e2e3e4-0006-4006-a006-c0cand000006' },
+      updatedBy: { universalIdentifier: 'e1e2e3e4-0007-4007-a007-c0cand000007' },
+      searchVector: { universalIdentifier: 'e1e2e3e4-0008-4008-a008-c0cand000008' },
+      name: { universalIdentifier: 'e1e2e3e4-0009-4009-a009-c0cand000009' },
+      phone: { universalIdentifier: 'e1e2e3e4-000a-400a-a00a-c0cand00000a' },
+      email: { universalIdentifier: 'e1e2e3e4-000b-400b-a00b-c0cand00000b' },
+      status: { universalIdentifier: 'e1e2e3e4-000c-400c-a00c-c0cand00000c' },
+      nextFollowUpDate: { universalIdentifier: 'e1e2e3e4-000d-400d-a00d-c0cand00000d' },
+      assignedTo: { universalIdentifier: 'e1e2e3e4-000e-400e-a00e-c0cand00000e' },
+      taskTargets: { universalIdentifier: 'e1e2e3e4-000f-400f-a00f-c0cand00000f' },
+      noteTargets: { universalIdentifier: 'e1e2e3e4-0010-4010-a010-c0cand000010' },
+      attachments: { universalIdentifier: 'e1e2e3e4-0011-4011-a011-c0cand000011' },
+      timelineActivities: { universalIdentifier: 'e1e2e3e4-0012-4012-a012-c0cand000012' },
+    },
+    indexes: {},
+    views: {
+      allCandidates: {
+        universalIdentifier: 'e1e2e3e4-0100-4100-a100-c0cand000100',
+        viewFields: {
+          name: { universalIdentifier: 'e1e2e3e4-0101-4101-a101-c0cand000101' },
+          phone: { universalIdentifier: 'e1e2e3e4-0102-4102-a102-c0cand000102' },
+          email: { universalIdentifier: 'e1e2e3e4-0103-4103-a103-c0cand000103' },
+          status: { universalIdentifier: 'e1e2e3e4-0104-4104-a104-c0cand000104' },
+          assignedTo: { universalIdentifier: 'e1e2e3e4-0105-4105-a105-c0cand000105' },
+        },
+      },
+      candidateRecordPageFields: {
+        universalIdentifier: 'e1e2e3e4-0200-4200-a200-c0cand000200',
+        viewFieldGroups: {
+          candidateInfo: { universalIdentifier: 'e1e2e3e4-0201-4201-a201-c0cand000201' },
+          crm: { universalIdentifier: 'e1e2e3e4-0202-4202-a202-c0cand000202' },
+          system: { universalIdentifier: 'e1e2e3e4-0203-4203-a203-c0cand000203' },
+        },
+        viewFields: {
+          name: { universalIdentifier: 'e1e2e3e4-0204-4204-a204-c0cand000204' },
+          phone: { universalIdentifier: 'e1e2e3e4-0205-4205-a205-c0cand000205' },
+          email: { universalIdentifier: 'e1e2e3e4-0206-4206-a206-c0cand000206' },
+          status: { universalIdentifier: 'e1e2e3e4-0207-4207-a207-c0cand000207' },
+          nextFollowUpDate: { universalIdentifier: 'e1e2e3e4-0208-4208-a208-c0cand000208' },
+          assignedTo: { universalIdentifier: 'e1e2e3e4-0209-4209-a209-c0cand000209' },
+          taskTargets: { universalIdentifier: 'e1e2e3e4-020a-420a-a20a-c0cand00020a' },
+          noteTargets: { universalIdentifier: 'e1e2e3e4-020b-420b-a20b-c0cand00020b' },
+          createdAt: { universalIdentifier: 'e1e2e3e4-020c-420c-a20c-c0cand00020c' },
+          createdBy: { universalIdentifier: 'e1e2e3e4-020d-420d-a20d-c0cand00020d' },
+        },
+      },
+    },
+  },
+  inAppNotification: {
+    universalIdentifier: 'a7c1d2e3-f4b5-6789-abcd-ef0123456789',
+    fields: {
+      id: { universalIdentifier: 'b1c2d3e4-f5a6-7890-abcd-000011112222' },
+      createdAt: { universalIdentifier: 'c2d3e4f5-a6b7-8901-bcde-111122223333' },
+      updatedAt: { universalIdentifier: '20202020-d001-4b01-8b01-110000000003' },
+      deletedAt: { universalIdentifier: '20202020-d002-4b02-8b02-110000000004' },
+      position: { universalIdentifier: '20202020-d011-4b11-8b11-110000000013' },
+      createdBy: { universalIdentifier: '20202020-d012-4b12-8b12-110000000014' },
+      updatedBy: { universalIdentifier: '20202020-d013-4b13-8b13-110000000015' },
+      searchVector: { universalIdentifier: '20202020-d014-4b14-8b14-110000000016' },
+      title: { universalIdentifier: '20202020-d003-4b03-8b03-110000000005' },
+      body: { universalIdentifier: '20202020-d004-4b04-8b04-110000000006' },
+      notificationType: { universalIdentifier: '20202020-d005-4b05-8b05-110000000007' },
+      isRead: { universalIdentifier: '20202020-d006-4b06-8b06-110000000008' },
+      actionUrl: { universalIdentifier: '20202020-d007-4b07-8b07-110000000009' },
+      relatedRecordId: { universalIdentifier: '20202020-d008-4b08-8b08-110000000010' },
+      relatedObjectMetadataId: { universalIdentifier: '20202020-d009-4b09-8b09-110000000011' },
+      recipientId: { universalIdentifier: '20202020-d010-4b10-8b10-110000000012' },
+    },
+    indexes: {},
   },
 } as const satisfies Record<
   string,

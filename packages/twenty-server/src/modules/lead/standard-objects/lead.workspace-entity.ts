@@ -40,6 +40,7 @@ export class LeadWorkspaceEntity extends BaseWorkspaceEntity {
   priority: string | null;
   source: string | null;
   importedAt: Date | null;
+  nextFollowUpDate: Date | null;
 
   // Relations
   clinic: EntityRelation<CompanyWorkspaceEntity> | null;

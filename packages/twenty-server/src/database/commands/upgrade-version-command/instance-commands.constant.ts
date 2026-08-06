@@ -1,5 +1,14 @@
 // Auto-edited by generate:instance-command — do not edit manually
 
+import { CreatePushSubscriptionTableFastInstanceCommand } from 'src/database/commands/upgrade-version-command/2-19/2-19-instance-command-fast-1752000000001-create-push-subscription-table';
+import { CreateWorkspaceJoinRequestTableFastInstanceCommand } from 'src/database/commands/upgrade-version-command/2-18/2-18-instance-command-fast-1751900000001-create-workspace-join-request-table';
+import { CreateMobileDeviceTokenTableFastInstanceCommand } from 'src/database/commands/upgrade-version-command/2-18/2-18-instance-command-fast-1753000000001-create-mobile-device-token-table';
+import { CreateBusinessCalendarTableFastInstanceCommand } from 'src/database/commands/upgrade-version-command/2-17/2-17-instance-command-fast-1801500000001-create-business-calendar-table';
+import { CreateDecisionRegisterTablesFastInstanceCommand } from 'src/database/commands/upgrade-version-command/2-17/2-17-instance-command-fast-1801600000001-create-decision-register-tables';
+import { AddDecisionRegisterApprovalFastInstanceCommand } from 'src/database/commands/upgrade-version-command/2-17/2-17-instance-command-fast-1801700000001-add-decision-register-approval';
+import { AddDecisionRegisterAttachmentsFastInstanceCommand } from 'src/database/commands/upgrade-version-command/2-17/2-17-instance-command-fast-1801800000001-add-decision-register-attachments';
+import { AddDecisionRegisterCommentsFastInstanceCommand } from 'src/database/commands/upgrade-version-command/2-17/2-17-instance-command-fast-1801900000001-add-decision-register-comments';
+
 import { AddViewFieldGroupIdIndexOnViewFieldFastInstanceCommand } from 'src/database/commands/upgrade-version-command/1-21/1-21-instance-command-fast-1775129420309-add-view-field-group-id-index-on-view-field';
 import { MigrateMessagingCalendarToCoreFastInstanceCommand } from 'src/database/commands/upgrade-version-command/1-21/1-21-instance-command-fast-1775165049548-migrate-messaging-calendar-to-core';
 import { AddEmailThreadWidgetTypeFastInstanceCommand } from 'src/database/commands/upgrade-version-command/1-21/1-21-instance-command-fast-1775200000000-add-email-thread-widget-type';
@@ -162,4 +171,12 @@ export const INSTANCE_COMMANDS = [
   AddUniversalIdentifierAndApplicationIdToSearchFieldMetadataFastInstanceCommand,
   AddPrimaryPublicDomainToApplicationFastInstanceCommand,
   MakePublicDomainApplicationIdNotNullSlowInstanceCommand,
+  CreateBusinessCalendarTableFastInstanceCommand,
+  CreateDecisionRegisterTablesFastInstanceCommand,
+  AddDecisionRegisterApprovalFastInstanceCommand,
+  AddDecisionRegisterAttachmentsFastInstanceCommand,
+  AddDecisionRegisterCommentsFastInstanceCommand,
+  CreateWorkspaceJoinRequestTableFastInstanceCommand,
+  CreateMobileDeviceTokenTableFastInstanceCommand,
+  CreatePushSubscriptionTableFastInstanceCommand,
 ];

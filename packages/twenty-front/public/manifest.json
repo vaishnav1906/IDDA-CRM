@@ -1,11 +1,23 @@
 {
-  "short_name": "Twenty",
-  "name": "Twenty",
+  "short_name": "IDDA CRM",
+  "name": "IDDA CRM",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",
   "icons": [
+    {
+      "src": "/favicon/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/favicon/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
     {
       "src": "images/icons/windows11/SmallTile.scale-100.png",
       "sizes": "71x71"
